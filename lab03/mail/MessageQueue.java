@@ -32,6 +32,17 @@ public class MessageQueue {
 	}
 
 	/**
+	 * Deletes given message from the queue. Will remove first matching message
+	 * in FIFO order.
+	 *
+	 * @param message
+	 *            the message to be deleted
+	 */
+	public void delete(Message message) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
+	/**
 	 * Get the total number of messages in the queue.
 	 *
 	 * @return the total number of messages in the queue
