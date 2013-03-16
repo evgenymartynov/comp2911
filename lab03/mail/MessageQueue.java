@@ -39,7 +39,7 @@ public class MessageQueue {
 	 *            the message to be deleted
 	 */
 	public void delete(Message message) {
-		throw new UnsupportedOperationException("Not implemented");
+		queue.removeFirstOccurrence(message);
 	}
 
 	/**
