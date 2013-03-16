@@ -21,5 +21,22 @@ public class Message {
 		return text;
 	}
 
+	/**
+	 * Compares two messages based on their underlying message text.
+	 *
+	 * @param other
+	 *            The message to compare against.
+	 * @return Whether messages are equivalent.
+	 */
+	@Override
+	public boolean equals(Object otherObject) {
+		if (!(otherObject instanceof Message)) {
+			return false;
+		}
+
+		Message other = (Message) otherObject;
+		return text == other.text;
+	}
+
 	private String text;
 }
