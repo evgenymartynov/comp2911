@@ -12,7 +12,7 @@ public class Connection {
 	 * @param p
 	 *            a Telephone object
 	 */
-	public Connection(MailSystem s, Telephone p) {
+	public Connection(MailSystem s, TelephoneMultiplexer p) {
 		system = s;
 		phone = p;
 		resetConnection();
@@ -188,7 +188,7 @@ public class Connection {
 	private Mailbox currentMailbox;
 	private String currentRecording;
 	private String accumulatedKeys;
-	private Telephone phone;
+	private TelephoneMultiplexer phone;
 	private int state;
 
 	private static final int DISCONNECTED = 0;

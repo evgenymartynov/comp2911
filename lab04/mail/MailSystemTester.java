@@ -8,7 +8,7 @@ public class MailSystemTester {
 	public static void main(String[] args) {
 		MailSystem system = new MailSystem(MAILBOX_COUNT);
 		Scanner console = new Scanner(System.in);
-		Telephone p = new Telephone(system, console);
+		TelephoneMultiplexer p = new TelephoneMultiplexer(system, console);
 		p.run();
 	}
 

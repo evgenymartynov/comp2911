@@ -5,19 +5,20 @@ import java.util.Scanner;
  * A telephone that takes simulated keystrokes and voice input from the user and
  * simulates spoken text.
  */
-public class Telephone {
+public class TelephoneMultiplexer {
 	/**
 	 * Construct phone object.
 	 *
 	 * @param aScanner
 	 *            that reads text from a character-input stream
 	 */
-	public Telephone(MailSystem system, Scanner aScanner) {
+	public TelephoneMultiplexer(MailSystem system, Scanner aScanner) {
 		scanner = aScanner;
 		system_ = system;
 
 		identifiers_ = new ArrayList<String>();
 		connections_ = new ArrayList<Connection>();
+		activeIdentifier_ = "null";
 	}
 
 	/**
@@ -27,7 +28,7 @@ public class Telephone {
 	 *            the text that will be "spoken"
 	 */
 	public void speak(String output) {
-		System.out.println(output);
+		System.out.println("[" + activeIdentifier_ + "] " + output);
 	}
 
 	/**
@@ -71,6 +72,10 @@ public class Telephone {
 		int connectionIndex = identifiers_.indexOf(newIdentifier);
 
 		if (connectionIndex < 0) {
+			// We switch activeIdentifier because creating a new Connection will
+			// use the current phone to speak back to us.
+			activeIdentifier_ = newIdentifier;
+
 			Connection newConnection = new Connection(system_, this);
 			identifiers_.add(newIdentifier);
 			connections_.add(newConnection);
@@ -86,5 +91,6 @@ public class Telephone {
 
 	private ArrayList<String> identifiers_;
 	private ArrayList<Connection> connections_;
+	private String activeIdentifier_;
 	private Connection activeConnection_;
 }
