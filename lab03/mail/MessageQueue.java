@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * A first-in, first-out collection of messages. This implementation is not very
@@ -9,7 +9,7 @@ public class MessageQueue {
 	 * Constructs an empty message queue.
 	 */
 	public MessageQueue() {
-		queue = new ArrayList<Message>();
+		queue = new LinkedList<Message>();
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class MessageQueue {
 	 *            the message to be deleted
 	 */
 	public void delete(Message message) {
-		throw new UnsupportedOperationException("Not implemented");
+		queue.removeFirstOccurrence(message);
 	}
 
 	/**
@@ -64,5 +64,5 @@ public class MessageQueue {
 			return queue.get(0);
 	}
 
-	private ArrayList<Message> queue;
+	private LinkedList<Message> queue;
 }
