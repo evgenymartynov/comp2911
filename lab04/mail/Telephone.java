@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -11,8 +12,12 @@ public class Telephone {
 	 * @param aScanner
 	 *            that reads text from a character-input stream
 	 */
-	public Telephone(Scanner aScanner) {
+	public Telephone(MailSystem system, Scanner aScanner) {
 		scanner = aScanner;
+		system_ = system;
+
+		identifiers_ = new ArrayList<String>();
+		connections_ = new ArrayList<Connection>();
 	}
 
 	/**
@@ -27,28 +32,59 @@ public class Telephone {
 
 	/**
 	 * Loops reading user input and passes the input to the Connection object's
-	 * methods dial, record or hangup.
+	 * methods dial, record, switch identifier or hangup.
 	 *
-	 * @param c
-	 *            the connection that connects this phone to the voice mail
-	 *            system
+	 * Expects the connection to be created by providing an identifier before
+	 * use of connection commands. Hanging up does not cause the connection to
+	 * be dropped.
+	 *
 	 */
-	public void run(Connection c) {
+	public void run() {
 		boolean more = true;
+
 		while (more) {
 			String input = scanner.nextLine();
 			if (input == null)
 				return;
+
 			if (input.equalsIgnoreCase("H"))
-				c.hangup();
+				activeConnection_.hangup();
 			else if (input.equalsIgnoreCase("Q"))
 				more = false;
 			else if (input.length() == 1 && "1234567890#".indexOf(input) >= 0)
-				c.dial(input);
-			else
-				c.record(input);
+				activeConnection_.dial(input);
+			else if (input.length() > 1 && input.endsWith(":")) {
+				String newIdentifier = input.substring(0, input.length() - 1);
+				setIdentifier(newIdentifier);
+			} else
+				activeConnection_.record(input);
 		}
 	}
 
+	/**
+	 * Updates the current connection based on the identifier input by user.
+	 *
+	 * @param newIdentifier
+	 *            Identifier of the new connection.
+	 */
+	private void setIdentifier(String newIdentifier) {
+		int connectionIndex = identifiers_.indexOf(newIdentifier);
+
+		if (connectionIndex < 0) {
+			Connection newConnection = new Connection(system_, this);
+			identifiers_.add(newIdentifier);
+			connections_.add(newConnection);
+
+			activeConnection_ = newConnection;
+		} else {
+			activeConnection_ = connections_.get(connectionIndex);
+		}
+	}
+
+	private MailSystem system_;
 	private Scanner scanner;
+
+	private ArrayList<String> identifiers_;
+	private ArrayList<Connection> connections_;
+	private Connection activeConnection_;
 }

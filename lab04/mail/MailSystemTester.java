@@ -8,9 +8,8 @@ public class MailSystemTester {
 	public static void main(String[] args) {
 		MailSystem system = new MailSystem(MAILBOX_COUNT);
 		Scanner console = new Scanner(System.in);
-		Telephone p = new Telephone(console);
-		Connection c = new Connection(system, p);
-		p.run(c);
+		Telephone p = new Telephone(system, console);
+		p.run();
 	}
 
 	private static final int MAILBOX_COUNT = 20;
