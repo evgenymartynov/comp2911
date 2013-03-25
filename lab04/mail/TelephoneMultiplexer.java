@@ -45,6 +45,7 @@ public class TelephoneMultiplexer {
 
 		while (more) {
 			String input = scanner.nextLine();
+			System.out.println(">>>" + input);
 			if (input == null)
 				return;
 
@@ -82,6 +83,7 @@ public class TelephoneMultiplexer {
 
 			activeConnection_ = newConnection;
 		} else {
+			activeIdentifier_ = newIdentifier;
 			activeConnection_ = connections_.get(connectionIndex);
 		}
 	}
