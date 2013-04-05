@@ -37,7 +37,7 @@ public class CommandParser {
 		while (stream.hasNext()) {
 			String command = stream.next();
 
-			System.out.println("* " + command);
+			// System.out.println("* " + command);
 
 			// We can probably do this with a more compact method, but is it
 			// really worth the hassle?
@@ -123,7 +123,7 @@ public class CommandParser {
 			}
 		}
 
-		System.out.println("Exiting.");
+		// System.out.println("Exiting.");
 	}
 
 	private BookingSystem system;
