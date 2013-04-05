@@ -18,14 +18,26 @@ import java.util.NoSuchElementException;
  */
 public class BookingSystem {
 	// TODO
-	public void createRoom(String name, int capacity) {
-
+	public BookingSystem() {
+		rooms = new ArrayList<Room>();
 	}
 
 	// TODO
-	public boolean addNewBooking(String user, String title,
+	public void createRoom(String roomName, int capacity) {
+		rooms.add(new Room(roomName, capacity));
+	}
+
+	// TODO
+	public String addNewBooking(String user, String title,
 			BookingTimePeriod period, int capacity) {
-		return false;
+		for (Room room : rooms) {
+			if (room.isAvailable(period, capacity)) {
+				room.makeBooking(user, title, period, capacity);
+				return "Room " + room.getName() + " assigned";
+			}
+		}
+
+		return "Booking rejected";
 	}
 
 	// TODO
@@ -38,7 +50,7 @@ public class BookingSystem {
 	// TODO
 	public boolean deleteBookings(String user, String roomName,
 			BookingTimePeriod period) {
-		return false;
+		return findRoom(roomName).deleteBookings(user, period);
 	}
 
 	/**
@@ -63,7 +75,7 @@ public class BookingSystem {
 	 */
 	private Room findRoom(String name) {
 		for (Room room : rooms)
-			if (room.getName() == name)
+			if (room.getName().equals(name))
 				return room;
 
 		throw new NoSuchElementException("Room " + name + " not found.");
