@@ -6,6 +6,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /**
@@ -37,14 +38,41 @@ public class BookingSystem {
 			}
 		}
 
-		return "Booking rejected";
+		return null;
 	}
 
 	// TODO
-	public boolean updateExistingBookings(String user, String roomName,
+	public String updateExistingBookings(String user, String roomName,
 			String newTitle, BookingTimePeriod oldPeriod,
 			BookingTimePeriod newPeriod, int newCapacity) {
-		return false;
+		Room room = findRoom(roomName);
+
+		// To get this to work, we need some kind of transactional support.
+		// Unfortunately, because Java is retarded, there is no easy way to do
+		// a deep copy of the Room's state, and so we will need to manually
+		// unroll a failed transaction, breaking ALL THE ABSTRACTIONS!
+
+		String allocatedRoom = null;
+
+		// Grab the deletion list.
+		LinkedList<RoomBooking> removalList = room.getRemovalListOrNull(user,
+				oldPeriod);
+
+		if (removalList != null) {
+			// This should now succeed.
+			assert (room.deleteBookings(user, oldPeriod));
+
+			// Add a new booking, effectively replacing the old one.
+			allocatedRoom = addNewBooking(user, newTitle, newPeriod,
+					newCapacity);
+
+			// If allocation failed, undelete.
+			if (allocatedRoom == null) {
+				room.undelete(removalList);
+			}
+		}
+
+		return allocatedRoom;
 	}
 
 	// TODO

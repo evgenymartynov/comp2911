@@ -66,6 +66,8 @@ public class CommandParser {
 				String response = system.addNewBooking(user, title,
 						new BookingTimePeriod(month, date, time, duration,
 								numWeeks), capacity);
+				if (response == null)
+					response = "Booking rejected";
 				System.out.println(response);
 			} else if (command.equals("Change")) {
 				// Change <user> <room> <numWeeks> <month1> <date1> <time1>
@@ -89,8 +91,12 @@ public class CommandParser {
 				BookingTimePeriod newPeriod = new BookingTimePeriod(newMonth,
 						newDate, newTime, newDuration, numWeeks);
 
-				system.updateExistingBookings(user, roomName, newTitle,
-						oldPeriod, newPeriod, newCapacity);
+				String response = system.updateExistingBookings(user, roomName,
+						newTitle, oldPeriod, newPeriod, newCapacity);
+				if (response == null)
+					response = "Booking rejected";
+
+				System.out.println(response);
 			} else if (command.equals("Delete")) {
 				// Delete <user> <room> <numWeeks> <month> <date> <time>
 

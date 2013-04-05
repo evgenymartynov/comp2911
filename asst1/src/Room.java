@@ -67,7 +67,7 @@ public class Room {
 	 * @return Whether or not the booking request can be satisfied.
 	 */
 	public boolean isAvailable(BookingTimePeriod period, int capacity) {
-		if (this.capacity <= capacity)
+		if (this.capacity < capacity)
 			return false;
 
 		for (int week = 0; week < period.getNumWeeks(); week++) {
@@ -128,6 +128,29 @@ public class Room {
 	 * @return Whether or not the deletion succeeded.
 	 */
 	public boolean deleteBookings(String user, BookingTimePeriod period) {
+		LinkedList<RoomBooking> removalList = getRemovalListOrNull(user, period);
+
+		if (removalList == null)
+			return false;
+
+		System.out.println("[+] removing bookings: " + removalList);
+		bookings.removeAll(removalList);
+		return true;
+	}
+
+	/**
+	 * Generates a list of bookings that must be removed to fulfill the deletion
+	 * request.
+	 *
+	 * @param user
+	 *            User that must own the booking.
+	 * @param period
+	 *            Time period over which to delete existing bookings.
+	 * @return List of bookings that need to be removed, or null if removals are
+	 *         not allowed.
+	 */
+	public LinkedList<RoomBooking> getRemovalListOrNull(String user,
+			BookingTimePeriod period) {
 		LinkedList<RoomBooking> removalList = new LinkedList<RoomBooking>();
 
 		for (int week = 0; week < period.getNumWeeks(); week++) {
@@ -139,21 +162,23 @@ public class Room {
 			RoomBooking existing = bookings.floor(looksLike);
 			if (existing == null) {
 				System.out.println("[!] can't find " + looksLike);
-				return false;
+				return null;
 			}
 
 			// Permissions check.
 			if (!existing.getUser().equals(user)) {
 				System.out.println("[!] permissions failed: " + existing);
-				return false;
+				return null;
 			}
 
 			removalList.add(existing);
 		}
 
-		System.out.println("[+] removing bookings: " + removalList);
-		bookings.removeAll(removalList);
-		return true;
+		return removalList;
+	}
+
+	public void undelete(LinkedList<RoomBooking> entries) {
+		bookings.addAll(entries);
 	}
 
 	private String name;
