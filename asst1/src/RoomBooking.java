@@ -10,10 +10,25 @@ import java.util.Calendar;
 import java.util.Locale;
 
 /**
- * TODO
+ * Representation of a booking on a single day.
+ *
+ * This class includes methods for booking-to-booking comparisons and overlaps,
+ * which is its primary functional purpose.
  */
 public class RoomBooking implements Comparable<RoomBooking> {
-	// TODO
+	/**
+	 * Constructs a new room booking with a given owner, title, the starting
+	 * time and booking length in hours.
+	 *
+	 * @param user
+	 *            Owner of the booking.
+	 * @param title
+	 *            Title for the booking.
+	 * @param startTime
+	 *            Starting time for the booking.
+	 * @param duration
+	 *            Duration of the booking in hours.
+	 */
 	public RoomBooking(String user, String title, Calendar startTime,
 			int duration) {
 		this.user = user;
@@ -53,10 +68,20 @@ public class RoomBooking implements Comparable<RoomBooking> {
 		return false;
 	}
 
+	/**
+	 * Gets owner of the booking.
+	 *
+	 * @return Owner of the booking.
+	 */
 	public String getUser() {
 		return user;
 	}
 
+	/**
+	 * Gets booking duration.
+	 *
+	 * @return Duration of the booking, in hours.
+	 */
 	public int getDuration() {
 		return duration;
 	}

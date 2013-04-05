@@ -12,20 +12,38 @@ import java.util.TreeSet;
 /**
  * A single room with its associated bookings.
  *
- * TODO
+ * This class provides operations for placing and modifying bookings of the
+ * room.
  */
 public class Room {
+	/**
+	 * Constructs a new room with a given name and capacity.
+	 *
+	 * @param name
+	 *            Name of the room.
+	 * @param capacity
+	 *            Capacity of the room.
+	 */
 	public Room(String name, int capacity) {
 		this.name = name;
 		this.capacity = capacity;
 		this.bookings = new TreeSet<RoomBooking>();
 	}
 
+	/**
+	 * Gets the room's name.
+	 *
+	 * @return Room's name.
+	 */
 	public String getName() {
 		return name;
 	}
 
-	// TODO
+	/**
+	 * Returns description of the bookings made for this room.
+	 *
+	 * @return Description of bookings.
+	 */
 	public String getBookings() {
 		String summary = name;
 
@@ -96,6 +114,19 @@ public class Room {
 		System.out.println("[+] Added booking to room " + name);
 	}
 
+	/**
+	 * Deletes a set of bookings as described by a given time period. The owner
+	 * must match the given user.
+	 *
+	 * This method does not guarantee deletion. All weekly bookings must exist
+	 * in the given period and must be owned by the specified user.
+	 *
+	 * @param user
+	 *            User that must own the booking.
+	 * @param period
+	 *            Time period over which to delete existing bookings.
+	 * @return Whether or not the deletion succeeded.
+	 */
 	public boolean deleteBookings(String user, BookingTimePeriod period) {
 		LinkedList<RoomBooking> removalList = new LinkedList<RoomBooking>();
 
