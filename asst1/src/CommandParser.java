@@ -37,8 +37,6 @@ public class CommandParser {
 		while (commandStream.hasNext()) {
 			String command = commandStream.next();
 
-			// System.out.println("* " + command);
-
 			// We can probably do this with a more compact method, but is it
 			// really worth the hassle?
 			if (command.equals("Room")) {
@@ -124,8 +122,6 @@ public class CommandParser {
 						+ command + "'");
 			}
 		}
-
-		// System.out.println("Exiting.");
 	}
 
 	private BookingSystemCore system;

@@ -110,8 +110,6 @@ public class Room {
 					period.getHours());
 			bookings.add(request);
 		}
-
-		// System.out.println("[+] Added booking to room " + name);
 	}
 
 	/**
@@ -133,7 +131,6 @@ public class Room {
 		if (removalList == null)
 			return false;
 
-		// System.out.println("[+] removing bookings: " + removalList);
 		bookings.removeAll(removalList);
 		return true;
 	}
@@ -208,13 +205,13 @@ public class Room {
 
 			RoomBooking existing = bookings.floor(looksLike);
 			if (existing == null) {
-				// System.out.println("[!] can't find " + looksLike);
+
 				return null;
 			}
 
 			// Permissions check.
 			if (!existing.getUser().equals(user)) {
-				// System.out.println("[!] permissions failed: " + existing);
+
 				return null;
 			}
 
