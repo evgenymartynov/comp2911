@@ -6,20 +6,18 @@
  */
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /**
  * Main class for the booking system. In particular, all commands from user will
  * be executed via this class.
  *
- * Bookings are stored inside their rooms as maps to allow fast lookups. It is
- * enough to identify each booking with the date and starting time, since
- * bookings cannot overlap.
+ * It is enough to identify each booking with the date and starting time, since
+ * bookings cannot overlap within their assigned rooms.
  */
-public class BookingSystem {
+public class BookingSystemCore {
 	// TODO
-	public BookingSystem() {
+	public BookingSystemCore() {
 		rooms = new ArrayList<Room>();
 	}
 
@@ -34,7 +32,7 @@ public class BookingSystem {
 		for (Room room : rooms) {
 			if (room.isAvailable(period, capacity)) {
 				room.makeBooking(user, title, period, capacity);
-				return "Room " + room.getName() + " assigned";
+				return room.getName();
 			}
 		}
 
@@ -54,21 +52,17 @@ public class BookingSystem {
 
 		String allocatedRoom = null;
 
-		// Grab the deletion list.
-		LinkedList<RoomBooking> removalList = room.getRemovalListOrNull(user,
-				oldPeriod);
+		// Begin our two-step transaction.
+		Object transaction = room.beginDeletionTransaction(user, oldPeriod);
 
-		if (removalList != null) {
-			// This should now succeed.
-			assert (room.deleteBookings(user, oldPeriod));
-
+		if (transaction != null) {
 			// Add a new booking, effectively replacing the old one.
 			allocatedRoom = addNewBooking(user, newTitle, newPeriod,
 					newCapacity);
 
-			// If allocation failed, undelete.
+			// If allocation failed, roll back the deletion.
 			if (allocatedRoom == null) {
-				room.undelete(removalList);
+				room.rollbackDeletionTransaction(transaction);
 			}
 		}
 
@@ -88,8 +82,8 @@ public class BookingSystem {
 	 *            Name of the room.
 	 * @return String containing the name of the room and all its bookings.
 	 */
-	public String getBookings(String roomName) {
-		return findRoom(roomName).getBookings();
+	public String describeBookings(String roomName) {
+		return findRoom(roomName).describeBookings();
 	}
 
 	/**

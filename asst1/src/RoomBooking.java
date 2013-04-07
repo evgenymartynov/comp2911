@@ -89,6 +89,9 @@ public class RoomBooking implements Comparable<RoomBooking> {
 	/**
 	 * Converts booking to a suitable format for output, compliant to assignment
 	 * spec.
+	 *
+	 * We override Object.toString(), since it is *the* method designed for this
+	 * particular purpose. Creating a .describeSelf() is semantically invalid.
 	 */
 	@Override
 	public String toString() {

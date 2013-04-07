@@ -35,7 +35,7 @@ public class RoomBookingSystem {
 		Scanner commandStream = new Scanner(new FileReader(args[0]));
 
 		// Wire up our internals.
-		BookingSystem system = new BookingSystem();
+		BookingSystemCore system = new BookingSystemCore();
 		CommandParser parser = new CommandParser(system, commandStream);
 
 		// And run.

@@ -44,7 +44,7 @@ public class Room {
 	 *
 	 * @return Description of bookings.
 	 */
-	public String getBookings() {
+	public String describeBookings() {
 		String summary = name;
 
 		for (RoomBooking booking : bookings)
@@ -56,9 +56,9 @@ public class Room {
 	/**
 	 * Check availability of this room for a given booking request.
 	 *
-	 * The fact that this runs in O(weeks * bookings * log...) makes me very
-	 * sad. Standard Java classes seem to be very limiting, I'd happily do away
-	 * with Calendar.
+	 * The fact that this runs in O(weeks * bookings) makes me very sad.
+	 * Standard Java classes seem to be very limiting, I'd happily do away with
+	 * Calendar.
 	 *
 	 * @param period
 	 *            Booking period being tested.
@@ -139,6 +139,53 @@ public class Room {
 	}
 
 	/**
+	 * Starts a deletion transaction that can be rolled back. The room's state
+	 * will be changed as if the deletions have gone through. Transaction itself
+	 * should be treated externally as an opaque object.
+	 *
+	 * There are no guarantees that the rollback will result in a valid state if
+	 * the room has been modified in-between the start and end of this
+	 * transaction.
+	 *
+	 * A transaction does not need to be explicitly committed.
+	 *
+	 * @param user
+	 *            User that owns deleted bookings.
+	 * @param period
+	 *            Time period over which to delete existing bookings.
+	 * @return Object representing the transaction state, which is null if and
+	 *         only if the deletion cannot go through.
+	 */
+	public Object beginDeletionTransaction(String user, BookingTimePeriod period) {
+		LinkedList<RoomBooking> removalList = getRemovalListOrNull(user, period);
+
+		deleteBookings(user, period);
+
+		return removalList;
+	}
+
+	/**
+	 * Rolls back a previously started deletion transaction. See comments on
+	 * beginDeletionTransaction().
+	 *
+	 * @param transaction
+	 *            Transaction to be rolled back.
+	 */
+	public void rollbackDeletionTransaction(Object transaction) {
+		LinkedList<RoomBooking> savedBookings;
+
+		try {
+			assert transaction instanceof LinkedList<?>;
+			savedBookings = (LinkedList<RoomBooking>) transaction;
+		} catch (Exception e) {
+			throw new IllegalArgumentException(
+					"Given transaction is of wrong type");
+		}
+
+		bookings.addAll(savedBookings);
+	}
+
+	/**
 	 * Generates a list of bookings that must be removed to fulfill the deletion
 	 * request.
 	 *
@@ -149,7 +196,7 @@ public class Room {
 	 * @return List of bookings that need to be removed, or null if removals are
 	 *         not allowed.
 	 */
-	public LinkedList<RoomBooking> getRemovalListOrNull(String user,
+	private LinkedList<RoomBooking> getRemovalListOrNull(String user,
 			BookingTimePeriod period) {
 		LinkedList<RoomBooking> removalList = new LinkedList<RoomBooking>();
 
@@ -175,10 +222,6 @@ public class Room {
 		}
 
 		return removalList;
-	}
-
-	public void undelete(LinkedList<RoomBooking> entries) {
-		bookings.addAll(entries);
 	}
 
 	private String name;
