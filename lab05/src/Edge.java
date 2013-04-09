@@ -3,7 +3,7 @@
  *
  */
 public class Edge {
-	private Node to;
+	private Node<?> to;
 	private int weight;
 
 	/**
@@ -14,12 +14,12 @@ public class Edge {
 	 * @param weight
 	 *            Weight of the edge.
 	 */
-	public Edge(Node to, int weight) {
+	public Edge(Node<?> to, int weight) {
 		this.to = to;
 		this.weight = weight;
 	}
 
-	public Node getTo() {
+	public Node<?> getTo() {
 		return to;
 	}
 

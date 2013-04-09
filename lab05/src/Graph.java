@@ -7,14 +7,14 @@
  * Edges are allowed only between existing nodes in the graph. Edges have
  * weights and are directed.
  */
-public interface Graph {
+public interface Graph<T> {
 	/**
 	 * Adds a new node to the graph.
 	 *
 	 * @param newNode
 	 *            Node to add.
 	 */
-	public void addNode(Object newNode);
+	public void addNode(T label);
 
 	/**
 	 * Adds edge between two pre-existing nodes with a certain weight.
@@ -26,7 +26,7 @@ public interface Graph {
 	 * @param weight
 	 *            Weight of the edge.
 	 */
-	public void addEdge(Object from, Object to, int weight);
+	public void addEdge(T fromLabel, T toLabel, int weight);
 
 	/**
 	 * Checks if two nodes are directly connected. Direction of the edge is
@@ -41,7 +41,14 @@ public interface Graph {
 	 * @return Whether or not there exists an edge directly connecting origin
 	 *         node to target node.
 	 */
-	public boolean adjacent(Object from, Object to);
+	public boolean adjacent(T fromLabel, T toLabel);
+
+	/**
+	 * Checks the digraph for being strongly connected.
+	 *
+	 * @return Whether or not the digraph is strongly connected.
+	 */
+	public boolean isStronglyConnected();
 
 	/**
 	 * Calculates the length of shortest path between two given nodes. These
@@ -55,5 +62,5 @@ public interface Graph {
 	 *         otherwise -1 if the given nodes are disjoint, and number smaller
 	 *         than -1 if there is a negative cycle.
 	 */
-	public int shortestPathBetween(Object from, Object to);
+	public int shortestPathBetween(T fromLabel, T toLabel);
 }

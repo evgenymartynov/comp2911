@@ -1,13 +1,13 @@
 import java.util.LinkedList;
 
 
-public class Node {
-	public Node(Object label) {
+public class Node<T> {
+	public Node(T label) {
 		this.label = label;
 		this.edges = new LinkedList<Edge>();
 	}
 
-	public void addEdge(Node to, int weight) {
+	public void addEdge(Node<?> to, int weight) {
 		edges.add(new Edge(to, weight));
 	}
 
@@ -19,6 +19,6 @@ public class Node {
 		return label;
 	}
 
-	Object label;
+	T label;
 	LinkedList<Edge> edges;
 }

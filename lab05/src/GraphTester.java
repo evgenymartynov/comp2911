@@ -8,7 +8,7 @@ public class GraphTester {
 
 	@Test
 	public void testAdjacency() {
-		Graph g = new AdjacencyListGraph();
+		StringGraph g = new StringGraph();
 		g.addNode("First node");
 		g.addNode("Second node");
 		g.addNode("Third node");
@@ -46,8 +46,28 @@ public class GraphTester {
 	}
 
 	@Test
+	public void testConnectivity() {
+		Graph<Integer> g = new AdjacencyListGraph<Integer>();
+		assertTrue(g.isStronglyConnected());
+
+		for (int i = 0; i < 3; i++) {
+			g.addNode(i);
+
+			if (i == 0)
+				assertTrue(g.isStronglyConnected());
+			else
+				assertFalse(g.isStronglyConnected());
+		}
+
+		for (int i = 0; i < 3; i++)
+			for (int k = 0; k < 3; k++)
+				g.addEdge(i, k, 1);
+		assertTrue(g.isStronglyConnected());
+	}
+
+	@Test
 	public void testShortestPathNoNegativeCycle() {
-		Graph g = new AdjacencyListGraph();
+		Graph<Integer> g = new AdjacencyListGraph<Integer>();
 		for (int i = 0; i < 5; i++)
 			g.addNode(i);
 
@@ -71,7 +91,7 @@ public class GraphTester {
 
 	@Test
 	public void testShortestPathWithNegativeCycle() {
-		Graph g = new AdjacencyListGraph();
+		Graph<Integer> g = new AdjacencyListGraph<Integer>();
 		for (int i = 0; i < 5; i++)
 			g.addNode(i);
 
@@ -95,7 +115,7 @@ public class GraphTester {
 
 	@Test
 	public void testShortestPathOnDisconnectedGraph() {
-		Graph g = new AdjacencyListGraph();
+		Graph<Integer> g = new AdjacencyListGraph<Integer>();
 		for (int i = 0; i < 5; i++)
 			g.addNode(i);
 
