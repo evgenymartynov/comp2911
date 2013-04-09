@@ -29,8 +29,6 @@ public class BookingTimePeriod {
 
 		// Set the year just to be safe.
 		date.setYear(DEFAULT_YEAR);
-		date.setDate(day);
-		date.setHours(time);
 
 		// And we're done.
 		this.startDate = Calendar.getInstance();
