@@ -1,33 +1,25 @@
 /**
  * Internal representation of an edge for Graph implementations.
- * 
+ *
  */
 public class Edge {
-	private int from, to;
+	private Node to;
 	private int weight;
 
 	/**
-	 * Creates a directed edge between the given pair of nodes with a given
-	 * weight.
-	 * 
-	 * @param from
-	 *            Origin node.
+	 * Creates a directed edge to a given node nodes with a given weight.
+	 *
 	 * @param to
 	 *            Target node.
 	 * @param weight
 	 *            Weight of the edge.
 	 */
-	public Edge(int from, int to, int weight) {
-		this.from = from;
+	public Edge(Node to, int weight) {
 		this.to = to;
 		this.weight = weight;
 	}
 
-	public int getFrom() {
-		return from;
-	}
-
-	public int getTo() {
+	public Node getTo() {
 		return to;
 	}
 

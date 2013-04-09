@@ -1,69 +1,61 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 
 /**
- * Implementation of the Graph interface using adjacency list for graph
+ * Implementation of the Graph interface using adjacency lists for graph
  * representation.
  */
 public class AdjacencyListGraph implements Graph {
 	public AdjacencyListGraph() {
-		nodeToIntegerMap = new ArrayList<Object>();
-		adjacencyList = new ArrayList<LinkedList<Edge>>();
+		nodes = new ArrayList<Node>();
 	}
 
 	@Override
-	public void addNode(Object newNode) {
-		nodeToIntegerMap.add(newNode);
-		adjacencyList.add(new LinkedList<Edge>());
+	public void addNode(Object label) {
+		nodes.add(new Node(label));
 	}
 
 	@Override
-	public void addEdge(Object from, Object to, int weight) {
-		int fromNum = lookupNode(from);
-		int toNum = lookupNode(to);
+	public void addEdge(Object fromLabel, Object toLabel, int weight) {
+		Node from = lookupNode(fromLabel);
+		Node to = lookupNode(toLabel);
 
-		adjacencyList.get(fromNum).add(new Edge(fromNum, toNum, weight));
+		from.addEdge(to, weight);
 	}
 
 	@Override
-	public boolean adjacent(Object from, Object to) {
-		int fromNum = lookupNode(from);
-		int toNum = lookupNode(to);
+	public boolean adjacent(Object fromLabel, Object toLabel) {
+		Node from = lookupNode(fromLabel);
+		Node to = lookupNode(toLabel);
 
-		for (Edge edge : adjacencyList.get(fromNum))
-			if (edge.getTo() == toNum)
+		for (Edge edge : from.getEdges())
+			if (edge.getTo() == to)
 				return true;
 		return false;
 	}
 
 	@Override
-	public int shortestPathBetween(Object from, Object to) {
-		int fromNum = lookupNode(from);
-		int toNum = lookupNode(to);
-
-		// We pull out all edges into a single list.
-		ArrayList<Edge> allEdges = new ArrayList<Edge>();
-		for (LinkedList<Edge> list : adjacencyList)
-			allEdges.addAll(list);
+	public int shortestPathBetween(Object fromLabel, Object toLabel) {
+		Node from = lookupNode(fromLabel);
+		Node to = lookupNode(toLabel);
 
 		// We want to see the distances after Bellman-Ford is finished, so
-		// allocate the array here and pass it in.
-		int numNodes = adjacencyList.size();
-		int distance[] = new int[numNodes];
+		// allocate this cache here and pass it in.
+		HashMap<Node, Integer> distance = new HashMap<Node, Integer>();
 
-		boolean success = runBellmanFord(distance, allEdges, fromNum);
+		boolean success = runBellmanFord(distance, from);
 
 		// Return an appropriate result.
 		if (!success)
 			return -2;
-		if (distance[toNum] >= INFINITY)
+		if (distance.get(to) >= INFINITY)
 			return -1;
-		return distance[toNum];
+		return distance.get(to);
 	}
 
 	/**
 	 * Runs the Bellman-Ford algorithm on the given data.
-	 * 
+	 *
 	 * @param distance
 	 *            Output parameter: gets populated with best distance to each
 	 *            node.
@@ -74,29 +66,30 @@ public class AdjacencyListGraph implements Graph {
 	 * @return Whether or not the calculation succeeded. It will only fail in
 	 *         case of negative cycles.
 	 */
-	private boolean runBellmanFord(int[] distance, ArrayList<Edge> edges,
-			int from) {
-		final int numNodes = distance.length;
-
+	private boolean runBellmanFord(HashMap<Node, Integer> distance, Node from) {
 		// Prepare.
-		for (int i = 0; i < numNodes; i++)
-			distance[i] = (i == from ? 0 : INFINITY);
+		for (Node node : nodes)
+			distance.put(node, (from.equals(node) ? 0 : INFINITY));
 
 		// Run the rounds.
+		final int numRounds = nodes.size();
 		boolean stillGoing = false;
 
-		for (int round = 0; round < numNodes; round++) {
+		for (int round = 0; round < numRounds; round++) {
 			stillGoing = false;
 
-			for (Edge edge : edges) {
+			for (Node expandingNode : nodes) {
 				// Skip over unexpanded nodes.
-				if (distance[edge.getFrom()] >= INFINITY)
+				if (distance.get(expandingNode) >= INFINITY)
 					continue;
 
-				int newLength = distance[edge.getFrom()] + edge.getWeight();
-				if (distance[edge.getTo()] > newLength) {
-					distance[edge.getTo()] = newLength;
-					stillGoing = true;
+				for (Edge edge : expandingNode.getEdges()) {
+					int newLength = distance.get(expandingNode)
+							+ edge.getWeight();
+					if (distance.get(edge.getTo()) > newLength) {
+						distance.put(edge.getTo(), newLength);
+						stillGoing = true;
+					}
 				}
 			}
 		}
@@ -107,29 +100,27 @@ public class AdjacencyListGraph implements Graph {
 	}
 
 	/**
-	 * Converts a given node into a node number internal to this implementation.
-	 * 
+	 * Gets a node with a given node label.
+	 *
 	 * @throws IllegalArgumentException
 	 *             If such node is not found in the graph.
-	 * 
-	 * @param node
-	 *            Node to convert.
-	 * @return Index of the node.
+	 *
+	 * @param label
+	 *            Label to look up.
+	 * @return Node with the given label.
 	 */
-	private int lookupNode(Object node) {
-		int index = nodeToIntegerMap.indexOf(node);
-		if (index < 0)
-			throw new IllegalArgumentException(
-					"Trying to manipulate node that has not been added to the graph");
-		return index;
+	private Node lookupNode(Object label) {
+		for (Node node : nodes)
+			if (node.getLabel().equals(label))
+				return node;
+
+		throw new IllegalArgumentException(
+				"Trying to manipulate node that has not been added to the graph");
 	}
 
 	// Allows conversion between external node types and our internal integer
 	// mapping.
-	private ArrayList<Object> nodeToIntegerMap;
-
-	// Adjacency list, using our internal representation of nodes and edges.
-	private ArrayList<LinkedList<Edge>> adjacencyList;
+	private ArrayList<Node> nodes;
 
 	// One billion ought to be enough for anybody.
 	final private int INFINITY = (int) 1e9;
