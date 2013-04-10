@@ -12,7 +12,7 @@ import java.util.Scanner;
 /**
  * Main entry point for the room booking system.
  *
- * Usage: java RoomBookingSystem INPUT
+ * Usage: java RoomBookingSystem FILE
  *
  */
 public class RoomBookingSystem {
@@ -28,7 +28,7 @@ public class RoomBookingSystem {
 		// Ensure we were invoked in the expected manner.
 		if (args.length != 1) {
 			throw new IllegalArgumentException(
-					"Usage: java RoomBookingSystem INPUT");
+					"Usage: java RoomBookingSystem FILE");
 		}
 
 		// Open up the file -- this might throw an error.

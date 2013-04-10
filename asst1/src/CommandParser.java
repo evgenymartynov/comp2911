@@ -18,7 +18,7 @@ public class CommandParser {
 	/**
 	 * @param system
 	 *            Booking system against which to issue the commands.
-	 * @param commandStream
+	 * @param stream
 	 *            Stream of commands, as defined in the assignment spec.
 	 */
 	public CommandParser(BookingSystemCore system, Scanner stream) {
