@@ -64,6 +64,14 @@ public class RoomBooking implements Comparable<RoomBooking> {
         if (otherStart < thisEnd && thisEnd <= otherEnd)
             return true;
 
+        // The only other option now is that this one completely includes the
+        // other booking.
+        if (thisStart <= otherStart && otherStart < thisEnd)
+            return true;
+        // And just to be safe, do the other one, too.
+        if (thisStart < otherEnd && otherEnd <= thisEnd)
+            return true;
+
         // Should be good now.
         return false;
     }
