@@ -205,16 +205,20 @@ public class Room {
 
             RoomBooking existing = bookings.floor(looksLike);
             if (existing == null) {
+                return null;
+            }
 
+            // Check if the booking actually matched.
+            if (!existing.equals(looksLike)) {
                 return null;
             }
 
             // Permissions check.
             if (!existing.getUser().equals(user)) {
-
                 return null;
             }
 
+            // Looks reasonable.
             removalList.add(existing);
         }
 
