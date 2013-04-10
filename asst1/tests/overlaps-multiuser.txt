@@ -1,0 +1,14 @@
+Room 10 a
+Room 20 b
+Book One 3 1 Apr 1 12 3 ThreeHourTuteAtNoon
+Print a
+Print b
+Book One 3 1 Apr 1 12 1 OneHourTuteAtNoon
+Print a
+Print b
+Book Two 3 1 Apr 1 13 1 OneHourTuteAtOne
+Print a
+Print b
+Book Two 3 1 Apr 1 13 1 Rejected
+Print a
+Print b

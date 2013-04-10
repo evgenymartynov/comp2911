@@ -1,0 +1,17 @@
+Room 10 room
+Book Tester 5 7 Apr 1 15 2 TutesAtThree
+Print room
+Delete Tester room 2 Apr 15 15
+Print room
+Book Tester 5 2 Apr 15 15 1 OneHourTute
+Print room
+Delete Tester room 2 Apr 8 15
+Print room
+Book Tester 5 3 Apr 8 15 2 NewTutes
+Print room
+Delete Tester room 2 Apr 1 15
+Print room
+Delete Tester room 1 Apr 1 15
+Print room
+Delete Tester room 4 Apr 22 15
+Print room
