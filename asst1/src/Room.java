@@ -13,7 +13,8 @@ import java.util.TreeSet;
  * A single room with its associated bookings.
  *
  * This class provides operations for placing and modifying bookings of the
- * room.
+ * room. It also provides a limited functionality for transactions on deletions,
+ * allowing un-deletions.
  */
 public class Room {
     /**
@@ -31,7 +32,7 @@ public class Room {
     }
 
     /**
-     * Gets the room's name.
+     * Gets the room's name, which is meant to serve as a unique identifier.
      *
      * @return Room's name.
      */
@@ -40,7 +41,8 @@ public class Room {
     }
 
     /**
-     * Returns description of the bookings made for this room.
+     * Returns description of the bookings made for this room. The output is
+     * compliant with the assignment specification.
      *
      * @return Description of bookings.
      */
@@ -71,7 +73,7 @@ public class Room {
             return false;
 
         for (int week = 0; week < period.getNumWeeks(); week++) {
-            Calendar thisTime = (Calendar) period.getTime().clone();
+            Calendar thisTime = period.getTime();
             thisTime.add(Calendar.WEEK_OF_YEAR, week);
 
             RoomBooking request = new RoomBooking("", "", thisTime,
@@ -89,7 +91,7 @@ public class Room {
      * Puts in the booking request into the system.
      *
      * Assumes that the system is in a sane state, and that the requested spots
-     * are available.
+     * are available. Otherwise, will most likely result in a corrupt state.
      *
      * @param user
      *            Originator of the request.
@@ -103,7 +105,7 @@ public class Room {
     public void makeBooking(String user, String title,
             BookingTimePeriod period, int capacity) {
         for (int week = 0; week < period.getNumWeeks(); week++) {
-            Calendar thisTime = (Calendar) period.getTime().clone();
+            Calendar thisTime = period.getTime();
             thisTime.add(Calendar.WEEK_OF_YEAR, week);
 
             RoomBooking request = new RoomBooking(user, title, thisTime,
@@ -114,7 +116,7 @@ public class Room {
 
     /**
      * Deletes a set of bookings as described by a given time period. The owner
-     * must match the given user.
+     * must match the specified user.
      *
      * This method does not guarantee deletion. All weekly bookings must exist
      * in the given period and must be owned by the specified user.
@@ -174,17 +176,17 @@ public class Room {
         try {
             assert transaction instanceof LinkedList<?>;
             savedBookings = (LinkedList<RoomBooking>) transaction;
+            bookings.addAll(savedBookings);
         } catch (Exception e) {
             throw new IllegalArgumentException(
                     "Given transaction is of wrong type");
         }
-
-        bookings.addAll(savedBookings);
     }
 
     /**
      * Generates a list of bookings that must be removed to fulfill the deletion
-     * request.
+     * request. Checks are performed against the user owning each booking being
+     * removed, and each booking in the specified period must exist.
      *
      * @param user
      *            User that must own the booking.
@@ -198,7 +200,7 @@ public class Room {
         LinkedList<RoomBooking> removalList = new LinkedList<RoomBooking>();
 
         for (int week = 0; week < period.getNumWeeks(); week++) {
-            Calendar thisTime = (Calendar) period.getTime().clone();
+            Calendar thisTime = period.getTime();
             thisTime.add(Calendar.WEEK_OF_YEAR, week);
 
             RoomBooking looksLike = new RoomBooking("", "", thisTime, 0);

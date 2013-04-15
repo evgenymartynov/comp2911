@@ -149,11 +149,19 @@ public class RoomBooking implements Comparable<RoomBooking> {
                 .getTime());
     }
 
+    /**
+     * We use these fields to determine if two bookings cannot overlap. If any
+     * of these differ between them, we assume the bookings are disjoint.
+     */
     final static int fastOverlapFields[] = { Calendar.YEAR, Calendar.MONTH,
             Calendar.DATE };
 
     String user;
     String title;
     Calendar startTime;
+
+    /**
+     * Duration of the booking, in hours.
+     */
     int duration;
 }

@@ -10,10 +10,10 @@ import java.io.FileReader;
 import java.util.Scanner;
 
 /**
- * Main entry point for the room booking system.
+ * Main entry point for the room booking system. This class wires up our
+ * internal implementation with the input parser and lets it run.
  *
- * Usage: java RoomBookingSystem FILE
- *
+ * Usage: {@code java RoomBookingSystem FILE}
  */
 public class RoomBookingSystem {
     /**
@@ -23,6 +23,7 @@ public class RoomBookingSystem {
      *            Command-line arguments. First and only argument is the name of
      *            the input file to be processed.
      * @throws FileNotFoundException
+     *             If given file cannot be opened.
      */
     public static void main(String[] args) throws FileNotFoundException {
         // Ensure we were invoked in the expected manner.

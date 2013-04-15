@@ -10,7 +10,8 @@ import java.util.Scanner;
 
 /**
  * Parses commands from an input stream and routes them accordingly to the
- * booking system's methods.
+ * booking system's methods. Essentially, this class allows scripting the
+ * BookingSystemCore from a file, in the format defined by the assignment spec.
  *
  * Perhaps a better name would be CommandRouter, but it has to deal with input
  * parsing and command issuing.
@@ -29,10 +30,13 @@ public class CommandParser {
 
     /**
      * Enter the read-parse-execute loop. Exits once there are no more commands
-     * to process.
+     * to process. It will consume items from the {@code commandStream}, which
+     * are expected to conform to the input specification.
      *
-     * This is a fairly ugly method, but so is anything that deals with user
-     * input. This is *the* place to use fscanf()... silly Java doesn't have it.
+     * All of the input-managing ugliness has been confined to this function.
+     *
+     * @throws IllegalArgumentException
+     *             If the input does not conform to assignment spec.
      */
     public void execute() {
         while (commandStream.hasNext()) {
@@ -133,6 +137,13 @@ public class CommandParser {
         }
     }
 
+    /**
+     * Booking system that this CommandParser manipulates.
+     */
     private BookingSystemCore system;
+
+    /**
+     * Input stream of commands.
+     */
     private Scanner commandStream;
 }
