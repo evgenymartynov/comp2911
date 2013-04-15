@@ -45,31 +45,31 @@ public class RoomBooking implements Comparable<RoomBooking> {
      * @return Whether or not the bookings overlap.
      */
     public boolean overlaps(RoomBooking other) {
-        // Firstly, check for differing dates. No point checking for clashes on
-        // different days.
-        for (int field : fastOverlapFields)
-            if (this.startTime.get(field) != other.startTime.get(field))
-                return false;
+        Calendar thisStart = this.startTime;
+        Calendar otherStart = other.startTime;
+        Calendar thisEnd = (Calendar) thisStart.clone();
+        Calendar otherEnd = (Calendar) otherStart.clone();
 
-        // Pull out [start, end) intervals, in hours.
-        int thisStart = this.startTime.get(Calendar.HOUR_OF_DAY);
-        int otherStart = other.startTime.get(Calendar.HOUR_OF_DAY);
-        int thisEnd = thisStart + this.duration;
-        int otherEnd = otherStart + other.duration;
+        thisEnd.add(Calendar.HOUR_OF_DAY, this.duration);
+        otherEnd.add(Calendar.HOUR_OF_DAY, other.duration);
 
         // Check if start is sandwiched in the other request.
-        if (otherStart <= thisStart && thisStart < otherEnd)
+        if (otherStart.compareTo(thisStart) <= 0
+                && thisStart.compareTo(otherEnd) < 0)
             return true;
         // Do the same for end. Take care with interval end points.
-        if (otherStart < thisEnd && thisEnd <= otherEnd)
+        if (otherStart.compareTo(thisEnd) < 0
+                && thisEnd.compareTo(otherEnd) <= 0)
             return true;
 
         // The only other option now is that this one completely includes the
         // other booking.
-        if (thisStart <= otherStart && otherStart < thisEnd)
+        if (thisStart.compareTo(otherStart) <= 0
+                && otherStart.compareTo(thisEnd) < 0)
             return true;
         // And just to be safe, do the other one, too.
-        if (thisStart < otherEnd && otherEnd <= thisEnd)
+        if (thisStart.compareTo(otherEnd) < 0
+                && otherEnd.compareTo(thisEnd) <= 0)
             return true;
 
         // Should be good now.
@@ -148,13 +148,6 @@ public class RoomBooking implements Comparable<RoomBooking> {
         return (new SimpleDateFormat("MMM", Locale.ENGLISH)).format(startTime
                 .getTime());
     }
-
-    /**
-     * We use these fields to determine if two bookings cannot overlap. If any
-     * of these differ between them, we assume the bookings are disjoint.
-     */
-    final static int fastOverlapFields[] = { Calendar.YEAR, Calendar.MONTH,
-            Calendar.DATE };
 
     String user;
     String title;
