@@ -34,7 +34,6 @@ public class BookingTimePeriod {
      * @param numWeeks
      *            Number of weeks that this booking repeats for.
      */
-    @SuppressWarnings("deprecation")
     public BookingTimePeriod(String month, int day, int time, int hours,
             int numWeeks) {
         // Combine the input data for use with Calendar.
@@ -47,14 +46,14 @@ public class BookingTimePeriod {
             throw new IllegalArgumentException("Cannot parse month: " + month);
         }
 
-        // Set the year just to be safe.
-        date.setYear(DEFAULT_YEAR);
-        date.setDate(day);
-        date.setHours(time);
-
-        // And we're done.
+        // Set the month from parsed value.
         this.startDate = Calendar.getInstance();
         this.startDate.setTime(date);
+
+        // Set the rest of the fields.
+        this.startDate.set(Calendar.YEAR, DEFAULT_YEAR);
+        this.startDate.set(Calendar.DATE, day);
+        this.startDate.set(Calendar.HOUR_OF_DAY, time);
 
         this.numWeeks = numWeeks;
         this.hours = hours;
