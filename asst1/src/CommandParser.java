@@ -99,7 +99,7 @@ public class CommandParser {
                             roomName, newTitle, oldPeriod, newPeriod,
                             newCapacity);
                     if (response == null)
-                        response = "Booking rejected";
+                        response = "Change rejected";
                     else
                         response = "Room " + response + " assigned";
 
