@@ -1,0 +1,21 @@
+Room a assigned
+a
+One Apr 1 12 3 ThreeHourTuteAtNoon
+b
+Room b assigned
+a
+One Apr 1 12 3 ThreeHourTuteAtNoon
+b
+One Apr 1 12 1 OneHourTuteAtNoon
+Room b assigned
+a
+One Apr 1 12 3 ThreeHourTuteAtNoon
+b
+One Apr 1 12 1 OneHourTuteAtNoon
+Two Apr 1 13 1 OneHourTuteAtOne
+Booking rejected
+a
+One Apr 1 12 3 ThreeHourTuteAtNoon
+b
+One Apr 1 12 1 OneHourTuteAtNoon
+Two Apr 1 13 1 OneHourTuteAtOne

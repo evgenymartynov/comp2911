@@ -1,0 +1,17 @@
+Room 10 a
+Room 20 b
+Book Evgeny 5 3 Apr 1 12 3 ThreeTutesAtNoon
+Print a
+Print b
+Delete Evgeny a 3 Apr 1 12
+Print a
+Print b
+Book Evgeny 15 3 Apr 1 12 3 ThreeTutesAtNoon
+Print a
+Print b
+Delete Evgeny b 3 Apr 1 12
+Print a
+Print b
+Book Evgeny 25 3 Apr 1 12 3 ThreeTutesAtNoon
+Print a
+Print b

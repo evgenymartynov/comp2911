@@ -1,0 +1,10 @@
+Room 25 room
+Book A 25 3 Mar 1 9 3 ThreeMorningTutes
+Print room
+Delete B room 1 Mar 8 9
+Delete B room 1 Mar 1 9
+Print room
+Delete B room 1 Apr 1 9
+Print room
+Delete A room 1 Mar 8 9
+Print room
