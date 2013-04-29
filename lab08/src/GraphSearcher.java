@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GraphSearcher<T extends Comparable<?>> {
+public class GraphSearcher<T> {
     public GraphSearcher(Graph<T> graph, SearchStrat<T> nodeSelector) {
         this.graph = graph;
         this.nodeSelector = nodeSelector;
@@ -25,6 +25,7 @@ public class GraphSearcher<T extends Comparable<?>> {
 //            System.out.println(node.getLabel());
 
             if (node.getLabel().equals(to)) {
+                System.out.println("Cost to desination " + cost);
                 break;
             }
 

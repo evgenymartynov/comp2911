@@ -4,8 +4,7 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-
-public class DijkstraStrat<T extends Comparable<?>> implements SearchStrat<T> {
+public class DijkstraStrat<T> implements SearchStrat<T> {
     public DijkstraStrat() {
         reset();
     }
@@ -14,7 +13,7 @@ public class DijkstraStrat<T extends Comparable<?>> implements SearchStrat<T> {
     public boolean addNode(Node<T> node, int distance) {
         if (!visited.contains(node)) {
             visited.add(node);
-            queue.add(new Wrapper<T>(node, distance));
+            queue.add(fabricateNode(node, distance));
             return true;
         } else {
             return false;
@@ -40,6 +39,10 @@ public class DijkstraStrat<T extends Comparable<?>> implements SearchStrat<T> {
     public void reset() {
         queue = new PriorityQueue<Wrapper<T>>();
         visited = new HashSet<Node<T>>();
+    }
+
+    protected Wrapper<T> fabricateNode(Node<T> node, int distance) {
+        return new Wrapper<T>(node, distance, 0);
     }
 
     private Queue<Wrapper<T>> queue;

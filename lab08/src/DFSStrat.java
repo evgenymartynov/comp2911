@@ -3,7 +3,7 @@ import graph.Node;
 import java.util.HashSet;
 import java.util.Stack;
 
-public class DFSStrat<T extends Comparable<?>> implements SearchStrat<T> {
+public class DFSStrat<T> implements SearchStrat<T> {
     public DFSStrat() {
         reset();
     }
@@ -12,7 +12,7 @@ public class DFSStrat<T extends Comparable<?>> implements SearchStrat<T> {
     public boolean addNode(Node<T> node, int distance) {
         if (!visited.contains(node)) {
             visited.add(node);
-            stack.push(new Wrapper<T>(node, distance));
+            stack.push(new Wrapper<T>(node, distance, 0));
             return true;
         } else {
             return false;

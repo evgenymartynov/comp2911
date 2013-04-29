@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class BFSStrat<T extends Comparable<?>> implements SearchStrat<T> {
+public class BFSStrat<T> implements SearchStrat<T> {
     public BFSStrat() {
         reset();
     }
@@ -13,7 +13,7 @@ public class BFSStrat<T extends Comparable<?>> implements SearchStrat<T> {
     public boolean addNode(Node<T> node, int distance) {
         if (!visited.contains(node)) {
             visited.add(node);
-            queue.add(new Wrapper<T>(node, distance));
+            queue.add(new Wrapper<T>(node, distance, 0));
             return true;
         } else {
             return false;
