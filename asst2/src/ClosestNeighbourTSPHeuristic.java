@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class ClosestNeighbourTSPHeuristic implements TSPHeuristic {
     @Override
@@ -8,12 +7,16 @@ public class ClosestNeighbourTSPHeuristic implements TSPHeuristic {
             List<Job> jobs) {
         int estimate = 0;
 
-        // Find closest incomplete job to us.
+        // Find closest incomplete job to us, and count total number of
+        // remaining jobs.
         int closestDistance = INFINITY;
+        int numRemainingJobs = 0;
         for (int i = 0; i < jobs.size(); i++) {
             if (visitedSet.getBit(i)) {
                 continue;
             }
+
+            numRemainingJobs++;
 
             int distance = jobs.get(i).getStart().distanceTo(point);
             if (closestDistance > distance) {
@@ -32,17 +35,14 @@ public class ClosestNeighbourTSPHeuristic implements TSPHeuristic {
             }
         }
 
-        // Calculate the distances in the complete digraph of remaining jobs.
-        ArrayList<Integer> distances = new ArrayList<Integer>();
-        int numRemainingJobs = 0;
+        // Calculate all distances in the complete digraph of remaining jobs.
+        PriorityQueue<Integer> distances = new PriorityQueue<Integer>();
         for (int i = 0; i < jobs.size(); i++) {
             if (visitedSet.getBit(i)) {
                 continue;
             }
 
-            numRemainingJobs++;
-
-            for (int k = 0; k < jobs.size(); k++) {
+            for (int k = i+1; k < jobs.size(); k++) {
                 if (visitedSet.getBit(k)) {
                     continue;
                 }
@@ -50,16 +50,17 @@ public class ClosestNeighbourTSPHeuristic implements TSPHeuristic {
                 Job from = jobs.get(i);
                 Job to = jobs.get(k);
 
-                if (from != to) {
-                    distances.add(from.getEnd().distanceTo(to.getStart()));
+                distances.add(-from.getEnd().distanceTo(to.getStart()));
+                distances.add(-to.getEnd().distanceTo(from.getStart()));
+                while (distances.size() > numRemainingJobs - 1) {
+                    distances.poll();
                 }
             }
         }
-        Collections.sort(distances);
 
         // Now add up the (numRemainingJobs-1) smallest distances.
-        for (int i = 0; i < numRemainingJobs - 1; i++) {
-            estimate += distances.get(i);
+        for (int distance : distances) {
+            estimate += -distance;
         }
 
         return estimate;
