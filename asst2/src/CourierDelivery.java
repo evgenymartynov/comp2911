@@ -3,7 +3,6 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class CourierDelivery {
     public static void main(String[] args) throws FileNotFoundException {
         // Ensure we were invoked in the expected manner.

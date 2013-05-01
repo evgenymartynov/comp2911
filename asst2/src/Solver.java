@@ -1,5 +1,5 @@
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -11,16 +11,13 @@ public class Solver {
 
     public void solve() {
         HashSet<TSPState> visited = new HashSet<TSPState>();
-        HashMap<TSPState, Job> prevJob = new HashMap<TSPState, Job>();
         PriorityQueue<TSPState> pq = new PriorityQueue<TSPState>();
 
         // Initialise for the starting point.
-        pq.add(makeNode(0, new Point(0, 0), new YourMother(), null));
+        pq.add(makeNode(0, new Point(0, 0), new YourMother(), null, null));
 
         TSPState finalState = null;
         int exploredNodeCount = 0;
-
-        System.out.println(jobs);
 
         while (!pq.isEmpty()) {
             TSPState state = pq.poll();
@@ -30,7 +27,6 @@ public class Solver {
             }
             visited.add(state);
             exploredNodeCount++;
-            prevJob.put(state, state.getPrevJob());
 
             YourMother visitedSet = state.getVisitedSet();
             if (visitedSet.numSet() == jobs.size()) {
@@ -49,21 +45,44 @@ public class Solver {
                         + job.getStart().distanceTo(job.getEnd());
                 YourMother newVisitedSet = visitedSet.setBitAndCopy(i);
                 TSPState next = makeNode(newDistance, job.getEnd(),
-                        newVisitedSet, job);
+                        newVisitedSet, job, state);
                 pq.add(next);
             }
         }
 
-        System.out.println(finalState);
         System.out.println(exploredNodeCount + " nodes explored");
-        // System.out.println(finalState.summariseActions());
+        System.out.println("cost = " + finalState.getDistance());
+
+        // Trace back the path to final node.
+        LinkedList<TSPState> path = new LinkedList<TSPState>();
+        TSPState lastJob = finalState;
+        while (lastJob != null) {
+            path.addFirst(lastJob);
+            lastJob = lastJob.getPrevState();
+        }
+
+        Point position = new Point(0, 0);
+        for (TSPState state : path) {
+            if (!position.equals(state.getPoint())) {
+                System.out.println("Move from " + position.spaceSeparated()
+                        + " to " + state.getPoint().spaceSeparated());
+                position = state.getPoint();
+            }
+
+            Job job = state.getPrevJob();
+            if (job != null) {
+                System.out.println("Carry from "
+                        + job.getStart().spaceSeparated() + " to "
+                        + job.getEnd().spaceSeparated());
+            }
+        }
     }
 
     private TSPState makeNode(int distance, Point point, YourMother visitedSet,
-            Job prevJob) {
+            Job prevJob, TSPState prevState) {
         int estimate = heuristic.computeEstimate(point, visitedSet, jobs);
         return new TSPState(point, distance, estimate, visitedSet, jobs,
-                prevJob);
+                prevJob, prevState);
     }
 
     private List<Job> jobs;

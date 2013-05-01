@@ -2,29 +2,16 @@ import java.util.List;
 
 public class TSPState implements Comparable<TSPState> {
     public TSPState(Point point, int distance, int estimate,
-            YourMother visitedSet, List<Job> jobs, Job prevJob) {
+            YourMother visitedSet, List<Job> jobs, Job prevJob,
+            TSPState prevState) {
         this.point = point;
         this.distance = distance;
         this.priority = distance + estimate;
         this.visitedSet = visitedSet;
-        this.jobs = jobs;
 
         this.prevJob = prevJob;
+        this.prevState = prevState;
     }
-
-    // public String summariseActions() {
-    // String summary = "cost = " + distance + "\n";
-    //
-    // Point at = new Point(0, 0);
-    // for (Job job : completedJobs) {
-    // summary += "Move from " + at.spaceSeparated() + " to "
-    // + job.getStart().spaceSeparated() + "\n";
-    // summary += "Carry from " + job.getStart().spaceSeparated() + " to "
-    // + job.getEnd().spaceSeparated() + "\n";
-    // }
-    //
-    // return summary;
-    // }
 
     public Point getPoint() {
         return point;
@@ -40,6 +27,10 @@ public class TSPState implements Comparable<TSPState> {
 
     public Job getPrevJob() {
         return prevJob;
+    }
+
+    public TSPState getPrevState() {
+        return prevState;
     }
 
     public boolean isFinalState() throws Exception {
@@ -106,6 +97,6 @@ public class TSPState implements Comparable<TSPState> {
     // actually at.
     private int distance;
     private int priority;
-    private List<Job> jobs;
     private Job prevJob;
+    private TSPState prevState;
 }
