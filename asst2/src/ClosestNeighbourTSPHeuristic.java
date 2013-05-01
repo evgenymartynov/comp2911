@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ClosestNeighbourTSPHeuristic implements TSPHeuristic {
@@ -28,6 +30,36 @@ public class ClosestNeighbourTSPHeuristic implements TSPHeuristic {
                 Job job = jobs.get(i);
                 estimate += job.getStart().distanceTo(job.getEnd());
             }
+        }
+
+        // Calculate the distances in the complete digraph of remaining jobs.
+        ArrayList<Integer> distances = new ArrayList<Integer>();
+        int numRemainingJobs = 0;
+        for (int i = 0; i < jobs.size(); i++) {
+            if (visitedSet.getBit(i)) {
+                continue;
+            }
+
+            numRemainingJobs++;
+
+            for (int k = 0; k < jobs.size(); k++) {
+                if (visitedSet.getBit(k)) {
+                    continue;
+                }
+
+                Job from = jobs.get(i);
+                Job to = jobs.get(k);
+
+                if (from != to) {
+                    distances.add(from.getEnd().distanceTo(to.getStart()));
+                }
+            }
+        }
+        Collections.sort(distances);
+
+        // Now add up the (numRemainingJobs-1) smallest distances.
+        for (int i = 0; i < numRemainingJobs - 1; i++) {
+            estimate += distances.get(i);
         }
 
         return estimate;
