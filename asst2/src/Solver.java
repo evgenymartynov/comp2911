@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -9,51 +10,60 @@ public class Solver {
     }
 
     public void solve() {
+        HashSet<TSPState> visited = new HashSet<TSPState>();
+        HashMap<TSPState, Job> prevJob = new HashMap<TSPState, Job>();
         PriorityQueue<TSPState> pq = new PriorityQueue<TSPState>();
-        pq.add(makeNode(0, new Point(0, 0), new ArrayList<Job>(), jobs));
+
+        // Initialise for the starting point.
+        pq.add(makeNode(0, new Point(0, 0), new YourMother(), null));
 
         TSPState finalState = null;
         int exploredNodeCount = 0;
 
+        System.out.println(jobs);
+
         while (!pq.isEmpty()) {
             TSPState state = pq.poll();
-            exploredNodeCount++;
 
-            if (state.isFinalState()) {
+            if (visited.contains(state)) {
+                continue;
+            }
+            visited.add(state);
+            exploredNodeCount++;
+            prevJob.put(state, state.getPrevJob());
+
+            YourMother visitedSet = state.getVisitedSet();
+            if (visitedSet.numSet() == jobs.size()) {
                 finalState = state;
                 break;
             }
 
-            for (Job job : state.getRemainingJobs()) {
+            for (int i = 0; i < jobs.size(); i++) {
+                if (visitedSet.getBit(i)) {
+                    continue;
+                }
+
+                Job job = jobs.get(i);
                 int newDistance = state.getDistance()
                         + state.getPoint().distanceTo(job.getStart())
                         + job.getStart().distanceTo(job.getEnd());
-
-                // Poor man's approach of copying an array minus an element.
-                List<Job> remainingJobs = new ArrayList<Job>(
-                        state.getRemainingJobs());
-                remainingJobs.remove(job);
-
-                List<Job> completedJobs = new ArrayList<Job>(
-                        state.getCompletedJobs());
-                completedJobs.add(job);
-
+                YourMother newVisitedSet = visitedSet.setBitAndCopy(i);
                 TSPState next = makeNode(newDistance, job.getEnd(),
-                        completedJobs, remainingJobs);
+                        newVisitedSet, job);
                 pq.add(next);
             }
         }
 
         System.out.println(finalState);
         System.out.println(exploredNodeCount + " nodes explored");
-        System.out.println(finalState.summariseActions());
+        // System.out.println(finalState.summariseActions());
     }
 
-    private TSPState makeNode(int distance, Point point,
-            List<Job> completedJobs, List<Job> remainingJobs) {
-        int estimate = heuristic.computeEstimate(point, remainingJobs);
-        return new TSPState(point, distance, estimate, completedJobs,
-                remainingJobs);
+    private TSPState makeNode(int distance, Point point, YourMother visitedSet,
+            Job prevJob) {
+        int estimate = heuristic.computeEstimate(point, visitedSet, jobs);
+        return new TSPState(point, distance, estimate, visitedSet, jobs,
+                prevJob);
     }
 
     private List<Job> jobs;

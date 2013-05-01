@@ -2,28 +2,32 @@ import java.util.List;
 
 public class ClosestNeighbourTSPHeuristic implements TSPHeuristic {
     @Override
-    public int computeEstimate(Point point, List<Job> remainingJobs) {
+    public int computeEstimate(Point point, YourMother visitedSet,
+            List<Job> jobs) {
         int estimate = 0;
 
-        boolean completed[] = new boolean[remainingJobs.size()];
-        for (int iterNum = 0; iterNum < remainingJobs.size(); iterNum++) {
-            // Pick job closest to where we are.
-            int bestDistance = INFINITY;
-            int bestIndex = -1;
-
-            for (int i = 0; i < remainingJobs.size(); i++) {
-                int thisDistance = remainingJobs.get(i).getStart()
-                        .distanceTo(point);
-                if (!completed[i] && bestDistance > thisDistance) {
-                    bestDistance = thisDistance;
-                    bestIndex = i;
-                }
+        // Find closest incomplete job to us.
+        int closestDistance = INFINITY;
+        for (int i = 0; i < jobs.size(); i++) {
+            if (visitedSet.getBit(i)) {
+                continue;
             }
 
-            completed[bestIndex] = true;
-            estimate += bestDistance
-                    + remainingJobs.get(bestIndex).getStart()
-                            .distanceTo(remainingJobs.get(bestIndex).getEnd());
+            int distance = jobs.get(i).getStart().distanceTo(point);
+            if (closestDistance > distance) {
+                closestDistance = distance;
+            }
+        }
+        if (closestDistance < INFINITY) {
+            estimate += closestDistance;
+        }
+
+        // Add up all remaining job distances.
+        for (int i = 0; i < jobs.size(); i++) {
+            if (!visitedSet.getBit(i)) {
+                Job job = jobs.get(i);
+                estimate += job.getStart().distanceTo(job.getEnd());
+            }
         }
 
         return estimate;
