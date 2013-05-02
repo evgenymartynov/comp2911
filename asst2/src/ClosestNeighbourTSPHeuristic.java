@@ -1,69 +1,63 @@
+import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 public class ClosestNeighbourTSPHeuristic implements TSPHeuristic {
     @Override
     public int computeEstimate(Point point, YourMother visitedSet,
             List<Job> jobs) {
+        List<Job> remainingJobs = getRemainingJobs(visitedSet, jobs);
         int estimate = 0;
 
         // Find closest incomplete job to us, and count total number of
         // remaining jobs.
-        int closestDistance = INFINITY;
-        int numRemainingJobs = 0;
-        for (int i = 0; i < jobs.size(); i++) {
-            if (visitedSet.getBit(i)) {
-                continue;
-            }
-
-            numRemainingJobs++;
-
-            int distance = jobs.get(i).getStart().distanceTo(point);
-            if (closestDistance > distance) {
-                closestDistance = distance;
-            }
+        int shorestDistanceFromPoint = INFINITY;
+        for (Job job : remainingJobs) {
+            shorestDistanceFromPoint = Math.min(shorestDistanceFromPoint, job
+                    .getStart().distanceTo(point));
         }
-        if (closestDistance < INFINITY) {
-            estimate += closestDistance;
+        if (shorestDistanceFromPoint < INFINITY) {
+            estimate += shorestDistanceFromPoint;
         }
 
         // Add up all remaining job distances.
-        for (int i = 0; i < jobs.size(); i++) {
-            if (!visitedSet.getBit(i)) {
-                Job job = jobs.get(i);
-                estimate += job.getStart().distanceTo(job.getEnd());
-            }
+        for (Job job : remainingJobs) {
+            estimate += job.getStart().distanceTo(job.getEnd());
         }
 
-        // Calculate all distances in the complete digraph of remaining jobs.
-        PriorityQueue<Integer> distances = new PriorityQueue<Integer>();
-        for (int i = 0; i < jobs.size(); i++) {
-            if (visitedSet.getBit(i)) {
-                continue;
-            }
+        // For each job, find closest job to go to.
+        // Use all but the largest distance for the estimate.
+        int largestInterjobDistance = 0;
+        for (Job from : remainingJobs) {
+            int nearestJobDistance = INFINITY;
 
-            for (int k = i+1; k < jobs.size(); k++) {
-                if (visitedSet.getBit(k)) {
-                    continue;
-                }
-
-                Job from = jobs.get(i);
-                Job to = jobs.get(k);
-
-                distances.add(-from.getEnd().distanceTo(to.getStart()));
-                distances.add(-to.getEnd().distanceTo(from.getStart()));
-                while (distances.size() > numRemainingJobs - 1) {
-                    distances.poll();
+            for (Job to : remainingJobs) {
+                if (from != to) {
+                    nearestJobDistance = Math.min(nearestJobDistance, from
+                            .getEnd().distanceTo(to.getStart()));
                 }
             }
-        }
 
-        // Now add up the (numRemainingJobs-1) smallest distances.
-        for (int distance : distances) {
-            estimate += -distance;
+            if (nearestJobDistance < INFINITY) {
+                estimate += nearestJobDistance;
+                largestInterjobDistance = Math.max(largestInterjobDistance,
+                        nearestJobDistance);
+            }
         }
+        estimate -= largestInterjobDistance;
 
         return estimate;
+    }
+
+    private List<Job> getRemainingJobs(YourMother visitedSet, List<Job> jobs) {
+        ArrayList<Job> result = new ArrayList<Job>(jobs.size());
+
+        for (int i = 0; i < jobs.size(); i++) {
+            if (!visitedSet.getBit(i)) {
+                result.add(jobs.get(i));
+            }
+        }
+
+        return result;
     }
 
     private final int INFINITY = (int) 1e10;
