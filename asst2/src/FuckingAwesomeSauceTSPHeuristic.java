@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClosestNeighbourTSPHeuristic implements TSPHeuristic {
+public class FuckingAwesomeSauceTSPHeuristic implements TSPHeuristic {
     @Override
     public int computeEstimate(Point point, YourMother visitedSet,
             List<Job> jobs) {

@@ -15,7 +15,7 @@ public class CourierDelivery {
         Scanner inputStream = new Scanner(new FileReader(args[0]));
 
         List<Job> jobs = (new InputParser(inputStream)).parseJobs();
-        TSPHeuristic heuristic = new ClosestNeighbourTSPHeuristic();
+        TSPHeuristic heuristic = new FuckingAwesomeSauceTSPHeuristic();
         Solver solver = new Solver(jobs, heuristic);
         solver.solve();
     }
