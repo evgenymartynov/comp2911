@@ -20,7 +20,7 @@ public class FuckingAwesomeSauceTSPHeuristic implements TSPHeuristic {
 
         // Add up all remaining job distances.
         for (Job job : remainingJobs) {
-            estimate += job.getStart().distanceTo(job.getEnd());
+            estimate += job.getLength();
         }
 
         // For each job, find closest job to go to.

@@ -42,7 +42,7 @@ public class Solver {
                 Job job = jobs.get(i);
                 int newDistance = state.getDistance()
                         + state.getPoint().distanceTo(job.getStart())
-                        + job.getStart().distanceTo(job.getEnd());
+                        + job.getLength();
                 YourMother newVisitedSet = visitedSet.setBitAndCopy(i);
                 TSPState next = makeNode(newDistance, job.getEnd(),
                         newVisitedSet, job, state);
