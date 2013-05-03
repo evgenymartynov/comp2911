@@ -54,27 +54,27 @@ public class Solver {
         System.out.println("cost = " + finalState.getDistance());
 
         // Trace back the path to final node.
-        LinkedList<TSPState> path = new LinkedList<TSPState>();
+        LinkedList<Job> path = new LinkedList<Job>();
         TSPState lastJob = finalState;
         while (lastJob != null) {
-            path.addFirst(lastJob);
+            if (lastJob.getPrevJob() != null) {
+                path.addFirst(lastJob.getPrevJob());
+            }
+
             lastJob = lastJob.getPrevState();
         }
 
         Point position = new Point(0, 0);
-        for (TSPState state : path) {
-            if (!position.equals(state.getPoint())) {
+        for (Job job : path) {
+            if (!position.equals(job.getStart())) {
                 System.out.println("Move from " + position.spaceSeparated()
-                        + " to " + state.getPoint().spaceSeparated());
-                position = state.getPoint();
+                        + " to " + job.getStart().spaceSeparated());
             }
 
-            Job job = state.getPrevJob();
-            if (job != null) {
-                System.out.println("Carry from "
-                        + job.getStart().spaceSeparated() + " to "
-                        + job.getEnd().spaceSeparated());
-            }
+            System.out.println("Carry from " + job.getStart().spaceSeparated()
+                    + " to " + job.getEnd().spaceSeparated());
+
+            position = job.getEnd();
         }
     }
 

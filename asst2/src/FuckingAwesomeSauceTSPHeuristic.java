@@ -8,8 +8,7 @@ public class FuckingAwesomeSauceTSPHeuristic implements TSPHeuristic {
         List<Job> remainingJobs = getRemainingJobs(visitedSet, jobs);
         int estimate = 0;
 
-        // Find closest incomplete job to us, and count total number of
-        // remaining jobs.
+        // Find closest incomplete job to us.
         int shorestDistanceFromPoint = INFINITY;
         for (Job job : remainingJobs) {
             shorestDistanceFromPoint = Math.min(shorestDistanceFromPoint, job
