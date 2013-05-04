@@ -74,12 +74,12 @@ public class Solver {
         Point position = new Point(0, 0);
         for (Job job : path) {
             if (!position.equals(job.getStart())) {
-                System.out.println("Move from " + position.spaceSeparated()
-                        + " to " + job.getStart().spaceSeparated());
+                System.out.println("Move from " + position
+                        + " to " + job.getStart());
             }
 
-            System.out.println("Carry from " + job.getStart().spaceSeparated()
-                    + " to " + job.getEnd().spaceSeparated());
+            System.out.println("Carry from " + job.getStart()
+                    + " to " + job.getEnd());
 
             position = job.getEnd();
         }
