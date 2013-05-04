@@ -1,3 +1,10 @@
+/**
+ * COMP2911 Assignment 2
+ *
+ * Author: Evgeny Martynov
+ * Date: April-May 2013
+ */
+
 public class Point {
     public Point(int x, int y) {
         this.x = x;

@@ -1,3 +1,10 @@
+/**
+ * COMP2911 Assignment 2
+ *
+ * Author: Evgeny Martynov
+ * Date: April-May 2013
+ */
+
 public class Job {
     public Job(int startX, int startY, int endX, int endY) {
         start = new Point(startX, startY);

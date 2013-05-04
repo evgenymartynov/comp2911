@@ -1,3 +1,10 @@
+/**
+ * COMP2911 Assignment 2
+ *
+ * Author: Evgeny Martynov
+ * Date: April-May 2013
+ */
+
 import java.math.BigInteger;
 
 public class YourMother {
