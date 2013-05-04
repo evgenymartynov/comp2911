@@ -41,7 +41,7 @@ public class InputParser {
             int endX = inputStream.nextInt();
             int endY = inputStream.nextInt();
 
-            jobs.add(new Job(startX, startY, endX, endY));
+            jobs.add(new Job(new Point(startX, startY), new Point(endX, endY)));
         }
 
         return jobs;
