@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -27,7 +28,7 @@ public class Telephone {
         // Speaker things.
         speakerField = new JTextArea(10, 25);
 
-        c.gridwidth = 6;
+        c.gridwidth = 3;
         c.gridy = 0;
         bag.add(new JLabel("Speaker:"), c);
         c.gridy++;
@@ -38,6 +39,7 @@ public class Telephone {
         for (int i = 0; i < keyLabels.length(); i++) {
             final String label = keyLabels.substring(i, i + 1);
             JButton keyButton = new JButton(label);
+            keyButton.setPreferredSize(new Dimension(96, 32));
             keyButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
@@ -45,11 +47,15 @@ public class Telephone {
                 }
             });
 
-            c.gridwidth = 2;
-            c.gridx = (i % 3) * 2;
+            c.gridwidth = 1;
+            c.fill = c.BOTH;
+            c.weightx = 0.5;
+            c.gridx = i % 3;
             c.gridy = 2 + i / 3;
             bag.add(keyButton, c);
         }
+
+        c.weightx = 0;
 
         // Microphone and speech things.
         final JTextArea microphoneField = new JTextArea(10, 25);
@@ -77,7 +83,7 @@ public class Telephone {
         c.fill = GridBagConstraints.BOTH;
 
         // Mic.
-        c.gridwidth = 6;
+        c.gridwidth = 3;
         c.gridx = 0;
         c.gridy++;
         bag.add(new JLabel("Microphone:"), c);
@@ -89,7 +95,8 @@ public class Telephone {
         c.gridy++;
         c.gridx = 0;
         bag.add(speechButton, c);
-        c.gridx = 4;
+        c.gridwidth = 1;
+        c.gridx = 2;
         bag.add(hangupButton, c);
 
         // And display.
