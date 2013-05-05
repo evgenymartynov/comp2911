@@ -1,5 +1,5 @@
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,29 +17,42 @@ public class Telephone {
      * Constructs a telephone with a speaker, keypad, and microphone.
      */
     public Telephone() {
-        JPanel speakerPanel = new JPanel();
-        speakerPanel.setLayout(new BorderLayout());
-        speakerPanel.add(new JLabel("Speaker:"), BorderLayout.NORTH);
-        speakerField = new JTextArea(10, 25);
-        speakerPanel.add(speakerField, BorderLayout.CENTER);
+        // Initialise all the Swing bs.
+        JPanel bag = new JPanel();
+        bag.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        // End init.
 
+        // Speaker things.
+        speakerField = new JTextArea(10, 25);
+
+        c.gridwidth = 6;
+        c.gridy = 0;
+        bag.add(new JLabel("Speaker:"), c);
+        c.gridy++;
+        bag.add(speakerField, c);
+
+        // Key things.
         String keyLabels = "123456789*0#";
-        JPanel keyPanel = new JPanel();
-        keyPanel.setLayout(new GridLayout(4, 3));
         for (int i = 0; i < keyLabels.length(); i++) {
             final String label = keyLabels.substring(i, i + 1);
             JButton keyButton = new JButton(label);
-            keyPanel.add(keyButton);
             keyButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
                     connect.dial(label);
                 }
             });
+
+            c.gridwidth = 2;
+            c.gridx = (i % 3) * 2;
+            c.gridy = 2 + i / 3;
+            bag.add(keyButton, c);
         }
 
+        // Microphone and speech things.
         final JTextArea microphoneField = new JTextArea(10, 25);
-
         JButton speechButton = new JButton("Send speech");
         speechButton.addActionListener(new ActionListener() {
             @Override
@@ -49,6 +62,7 @@ public class Telephone {
             }
         });
 
+        // Hanging up things.
         JButton hangupButton = new JButton("Hangup");
         hangupButton.addActionListener(new ActionListener() {
             @Override
@@ -57,22 +71,31 @@ public class Telephone {
             }
         });
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(speechButton);
-        buttonPanel.add(hangupButton);
+        //
+        // Putting it all together.
+        //
+        c.fill = GridBagConstraints.BOTH;
 
-        JPanel microphonePanel = new JPanel();
-        microphonePanel.setLayout(new BorderLayout());
-        microphonePanel.add(new JLabel("Microphone:"), BorderLayout.NORTH);
-        microphonePanel.add(microphoneField, BorderLayout.CENTER);
-        microphonePanel.add(buttonPanel, BorderLayout.SOUTH);
+        // Mic.
+        c.gridwidth = 6;
+        c.gridx = 0;
+        c.gridy++;
+        bag.add(new JLabel("Microphone:"), c);
+        c.gridy++;
+        bag.add(microphoneField, c);
 
+        // Buttons.
+        c.gridwidth = 2;
+        c.gridy++;
+        c.gridx = 0;
+        bag.add(speechButton, c);
+        c.gridx = 4;
+        bag.add(hangupButton, c);
+
+        // And display.
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(speakerPanel, BorderLayout.NORTH);
-        frame.add(keyPanel, BorderLayout.CENTER);
-        frame.add(microphonePanel, BorderLayout.SOUTH);
-
+        frame.add(bag);
         frame.pack();
         frame.setVisible(true);
     }
