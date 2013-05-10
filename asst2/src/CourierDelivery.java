@@ -38,7 +38,7 @@ public class CourierDelivery {
         Scanner inputStream = new Scanner(new FileReader(args[0]));
 
         // Choose the heuristic for A*, according to the Strategy pattern.
-        TSPHeuristic heuristic = new FuckingAwesomeSauceTSPHeuristic();
+        TSPHeuristic heuristic = new ConcreteTSPHeuristic();
 
         // And go.
         List<Job> jobs = (new InputParser(inputStream)).parseJobs();

@@ -11,7 +11,7 @@ import java.util.List;
  * Internal representation of our A* search state.
  *
  * Note that comparison and hashing of this class ignores some of its fields.
- * See notes on its methods.
+ * See notes on its methods for details.
  */
 public class TSPState implements Comparable<TSPState> {
     /**
@@ -23,7 +23,7 @@ public class TSPState implements Comparable<TSPState> {
      *            Distance traveled so far by the courier.
      * @param estimate
      *            An admissible estimate from some heuristic.
-     * @param visitedSet
+     * @param completedSet
      *            Set of completed jobs.
      * @param jobs
      *            List of all jobs.
@@ -35,12 +35,12 @@ public class TSPState implements Comparable<TSPState> {
      *            {@code null}.
      */
     public TSPState(Point point, int distance, int estimate,
-            YourMother visitedSet, List<Job> jobs, Job prevJob,
+            CompletedJobSet completedSet, List<Job> jobs, Job prevJob,
             TSPState prevState) {
         this.point = point;
         this.distance = distance;
         this.priority = distance + estimate;
-        this.visitedSet = visitedSet;
+        this.completedSet = completedSet;
 
         this.prevJob = prevJob;
         this.prevState = prevState;
@@ -63,8 +63,8 @@ public class TSPState implements Comparable<TSPState> {
     /**
      * @return Set of completed jobs.
      */
-    public YourMother getVisitedSet() {
-        return visitedSet;
+    public CompletedJobSet getCompletedSet() {
+        return completedSet;
     }
 
     /**
@@ -101,10 +101,10 @@ public class TSPState implements Comparable<TSPState> {
     }
 
     /**
-     * Hashes this state using its point and visited set.
+     * Hashes this state using its point and completed set.
      *
      * Note that we want to consider two states to be equal if and only if they
-     * describe the same node in the state-exploded graph. See Solver comments.
+     * describe the same node in our graph. See Solver comments.
      */
     @Override
     public int hashCode() {
@@ -112,13 +112,13 @@ public class TSPState implements Comparable<TSPState> {
         int result = 1;
         result = prime * result + ((point == null) ? 0 : point.hashCode());
         result = prime * result
-                + ((visitedSet == null) ? 0 : visitedSet.hashCode());
+                + ((completedSet == null) ? 0 : completedSet.hashCode());
         return result;
     }
 
     /**
-     * Compares this state against another, based on their locations and visited
-     * sets.
+     * Compares this state against another, based on their locations and
+     * completed sets.
      *
      * See Solver comments.
      */
@@ -144,11 +144,11 @@ public class TSPState implements Comparable<TSPState> {
             return false;
         }
 
-        if (visitedSet == null) {
-            if (other.visitedSet != null) {
+        if (completedSet == null) {
+            if (other.completedSet != null) {
                 return false;
             }
-        } else if (!visitedSet.equals(other.visitedSet)) {
+        } else if (!completedSet.equals(other.completedSet)) {
             return false;
         }
 
@@ -160,9 +160,9 @@ public class TSPState implements Comparable<TSPState> {
      */
     private Point point;
     /**
-     * Set of visited nodes; used in differentiating between states.
+     * Set of completed jobs; used in differentiating between states.
      */
-    private YourMother visitedSet;
+    private CompletedJobSet completedSet;
 
     /**
      * Distance traveled to get to this node.

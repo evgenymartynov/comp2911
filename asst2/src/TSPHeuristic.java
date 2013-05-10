@@ -20,14 +20,14 @@ public interface TSPHeuristic {
      *
      * @param point
      *            Our current position.
-     * @param visitedSet
-     *            Data structure containing information on which original nodes
-     *            we have visited (i.e. jobs completed).
+     * @param completedSet
+     *            Data structure containing information on which jobs we have
+     *            completed.
      * @param jobs
      *            List of all jobs. Includes both completed and incomplete jobs.
      *
      * @return Heuristic estimate to the goal state.
      */
-    public int computeEstimate(Point point, YourMother visitedSet,
+    public int computeEstimate(Point point, CompletedJobSet completedSet,
             List<Job> jobs);
 }
