@@ -93,14 +93,6 @@ public class TSPState implements Comparable<TSPState> {
     }
 
     /**
-     * Summarises state information, used for debugging.
-     */
-    @Override
-    public String toString() {
-        return "<State at=" + point + ", cost=" + distance + ">";
-    }
-
-    /**
      * Hashes this state using its point and completed set.
      *
      * Note that we want to consider two states to be equal if and only if they

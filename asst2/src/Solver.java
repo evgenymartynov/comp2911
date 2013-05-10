@@ -12,8 +12,8 @@ import java.util.PriorityQueue;
 
 /**
  * Logic class that knows how to perform A-star search for the assignment
- * problem. We bring most of the search logic in here, allowing other classes to
- * behave in a much simpler manner.
+ * problem. We bring most of the search logic into here and into TSPState,
+ * allowing other classes to behave in a much simpler manner.
  *
  * Note that its constructor accepts a heuristic used for search-state
  * evaluation, as per the strategy design pattern. Search states are described

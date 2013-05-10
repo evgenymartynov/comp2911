@@ -24,21 +24,27 @@ public class Job {
         length = start.distanceTo(end);
     }
 
+    /**
+     * @return Start point of this job.
+     */
     public Point getStart() {
         return start;
     }
 
+    /**
+     * @return End point of this job.
+     */
     public Point getEnd() {
         return end;
     }
 
+    /**
+     * Gets the shortest distance between start and end of the job.
+     *
+     * @return Length of the job, from start to end.
+     */
     public int getLength() {
         return length;
-    }
-
-    @Override
-    public String toString() {
-        return "<Job from " + start + " to " + end + ">";
     }
 
     /**

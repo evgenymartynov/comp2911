@@ -8,7 +8,9 @@
 import java.util.List;
 
 /**
- * An interface describing heuristics used by the Solver.
+ * An interface describing heuristics used by the Solver. This is called a TSP
+ * heuristic since the assignment problem is a type of the Traveling Salesman
+ * Problem.
  *
  * As long as the concrete heuristic is admissible, given our state, it may be
  * used by the Solver. For further details, see the Solver class.
