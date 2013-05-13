@@ -16,13 +16,15 @@ public class SceneComponent extends JComponent {
         shapes = new ArrayList<SceneShape>();
 
         addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent event) {
+                for (SceneShape s : shapes)
+                    if (s.contains(event.getPoint()))
+                        s.setSelected(!s.isSelected());
+                repaint();
+            }
+
             public void mousePressed(MouseEvent event) {
                 mousePoint = event.getPoint();
-                for (SceneShape s : shapes) {
-                    if (s.contains(mousePoint))
-                        s.setSelected(!s.isSelected());
-                }
-                repaint();
             }
         });
 
@@ -30,13 +32,25 @@ public class SceneComponent extends JComponent {
             public void mouseDragged(MouseEvent event) {
                 Point lastMousePoint = mousePoint;
                 mousePoint = event.getPoint();
+                double dx = mousePoint.getX() - lastMousePoint.getX();
+                double dy = mousePoint.getY() - lastMousePoint.getY();
+
+                SceneShape toUnselect = null;
                 for (SceneShape s : shapes) {
-                    if (s.isSelected()) {
-                        double dx = mousePoint.getX() - lastMousePoint.getX();
-                        double dy = mousePoint.getY() - lastMousePoint.getY();
-                        s.translate((int) dx, (int) dy);
+                    if (s.contains(mousePoint)) {
+                        if (!s.isSelected())
+                            toUnselect = s;
+                        s.setSelected(true);
                     }
                 }
+
+                for (SceneShape s : shapes)
+                    if (s.isSelected())
+                        s.translate((int) dx, (int) dy);
+
+                if (toUnselect != null)
+                    toUnselect.setSelected(false);
+
                 repaint();
             }
         });
