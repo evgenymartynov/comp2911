@@ -57,12 +57,5 @@ public class CarShape extends SelectableShape {
                 && p.getY() <= y + width / 2;
     }
 
-    public void translate(int dx, int dy) {
-        x += dx;
-        y += dy;
-    }
-
-    private int x;
-    private int y;
     private int width;
 }

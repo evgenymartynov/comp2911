@@ -20,5 +20,11 @@ public abstract class SelectableShape implements SceneShape {
         translate(-2, -2);
     }
 
+    public void translate(int dx, int dy) {
+        x += dx;
+        y += dy;
+    }
+
+    protected int x, y;
     private boolean selected;
 }
