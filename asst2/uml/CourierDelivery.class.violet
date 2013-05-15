@@ -45,12 +45,12 @@ numBitsSet</string>
     </void>
     <void property="methods">
      <void property="text">
-      <string>coptWithCompletedJob()
-isCompleted()
+      <string>isCompleted()
 markCompleted()
 numCompleted()
 equals()
-hashCode()</string>
+hashCode()
+clone()</string>
      </void>
     </void>
     <void property="name">
@@ -64,19 +64,19 @@ hashCode()</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double1"/>
-      <double>837.0</double>
+      <double>848.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double1"/>
-      <double>683.0</double>
+      <double>684.0</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>837.0</double>
-     <double>683.0</double>
+     <double>848.0</double>
+     <double>684.0</double>
     </void>
    </object>
   </void>
@@ -263,7 +263,7 @@ makeNode()</string>
     </void>
     <void property="name">
      <void property="text">
-      <string>Solver</string>
+      <string>AStarTSPSolver</string>
      </void>
     </void>
    </object>
@@ -340,9 +340,9 @@ prevState</string>
       <string>getPoint()
 getCompletedSet()
 getDistance()
-getPoint()
 getPrevJob()
 getPrevState()
+compareTo()
 equals()
 hashCode()</string>
      </void>
