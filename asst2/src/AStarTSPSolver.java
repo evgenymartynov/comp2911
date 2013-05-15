@@ -13,7 +13,8 @@ import java.util.PriorityQueue;
 /**
  * Logic class that knows how to perform A-star search for the assignment
  * problem. We bring most of the search logic into here and into TSPState,
- * allowing other classes to behave in a much simpler manner.
+ * allowing other classes to behave in a much simpler manner. Heuristic logic
+ * resides inside TSPHeuristic's implementations.
  *
  * Note that its constructor accepts a heuristic used for search-state
  * evaluation, as per the strategy design pattern. Search states are described
@@ -30,11 +31,13 @@ import java.util.PriorityQueue;
  * ordering. However, since we need to keep track of more things, such as the
  * predecessor and best-known distance thus far, we keep them inside the state
  * tuple as well and treat them as not affecting what a state actually
- * describes.
+ * describes. That is, even though two TSPState instances may have differing
+ * predecessors, we still consider them to be equal. This is important for our
+ * use of HashSet below.
  *
  * We represent each set of completed jobs as a bitset, since it's fairly
- * optimal to keep these things compressed. Using anything else incurred a
- * significant runtime penalty.
+ * optimal to keep these things compressed. Using anything else incurred
+ * significant runtime and memory penalties.
  *
  * Unlike the lecture notes, we do not use .remove() method of PriorityQueue,
  * since that takes O(n) time. We settle for using a visited set of states
@@ -55,7 +58,7 @@ public class AStarTSPSolver {
     }
 
     /**
-     * Solves the problem for the given jobs and prints out the solution.
+     * Solves the problem for the given jobs and prints out a solution.
      */
     public void solve() {
         PriorityQueue<TSPState> pq = new PriorityQueue<TSPState>();
@@ -99,9 +102,9 @@ public class AStarTSPSolver {
                 CompletedJobSet newCompletedSet = completedJobs.clone();
                 newCompletedSet.markCompleted(i);
 
-                TSPState next = makeNode(newDistance, job.getEnd(),
+                TSPState newState = makeNode(newDistance, job.getEnd(),
                         newCompletedSet, job, state);
-                pq.add(next);
+                pq.add(newState);
             }
         }
 
