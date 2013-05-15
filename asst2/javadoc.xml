@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="javadoc">
     <target name="javadoc">
-        <javadoc access="private" author="false" classpath="." destdir="doc" doctitle="COMP2911 Assignment 2 - Courier Delivery" nodeprecated="true" nodeprecatedlist="true" noindex="true" nonavbar="false" notree="false" source="1.6" sourcefiles="src/CompletedJobSet.java,src/Job.java,src/CourierDelivery.java,src/Solver.java,src/InputParser.java,src/Point.java,src/TSPState.java,src/TSPHeuristic.java,src/ConcreteTSPHeuristic.java" sourcepath="src" splitindex="false" use="true" version="false"/>
+        <javadoc access="private" author="false" classpath="." destdir="doc" doctitle="COMP2911 Assignment 2 - Courier Delivery" nodeprecated="true" nodeprecatedlist="true" noindex="true" nonavbar="false" notree="false" source="1.6" sourcefiles="src/CompletedJobSet.java,src/Job.java,src/CourierDelivery.java,src/InputParser.java,src/Point.java,src/TSPState.java,src/TSPHeuristic.java,src/AStarTSPSolver.java,src/ConcreteTSPHeuristic.java" sourcepath="src" splitindex="false" use="true" version="false">
+            <link href="file:/home/evgeny/uni-dev/2911/asst2/doc/"/>
+        </javadoc>
     </target>
 </project>
