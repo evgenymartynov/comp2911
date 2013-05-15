@@ -98,8 +98,8 @@ public class Solver {
                 int newDistance = state.getDistance()
                         + state.getPoint().distanceTo(job.getStart())
                         + job.getLength();
-                CompletedJobSet newCompletedSet = completedJobs
-                        .copyWithCompletedJob(i);
+                CompletedJobSet newCompletedSet = completedJobs.clone();
+                newCompletedSet.markCompleted(i);
                 TSPState next = makeNode(newDistance, job.getEnd(),
                         newCompletedSet, job, state);
                 pq.add(next);

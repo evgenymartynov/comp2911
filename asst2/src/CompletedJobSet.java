@@ -19,7 +19,7 @@ public class CompletedJobSet {
      * Initialises a new, empty, set of completed jobs.
      */
     public CompletedJobSet() {
-        bits = new BigInteger("0");
+        bits = BigInteger.ZERO;
         numBitsSet = 0;
     }
 
@@ -35,20 +35,6 @@ public class CompletedJobSet {
         }
 
         bits = bits.setBit(i);
-    }
-
-    /**
-     * Returns a copy of itself with a job marked as having been completed.
-     *
-     * @param i Index of completed job.
-     * @return
-     */
-    public CompletedJobSet copyWithCompletedJob(int i) {
-        CompletedJobSet modified = new CompletedJobSet();
-        modified.bits = bits;
-        modified.numBitsSet = numBitsSet;
-        modified.markCompleted(i);
-        return modified;
     }
 
     /**
@@ -112,6 +98,20 @@ public class CompletedJobSet {
         }
 
         return true;
+    }
+
+    /**
+     * Returns a clone of the current object.
+     */
+    @Override
+    public CompletedJobSet clone() {
+        CompletedJobSet result = new CompletedJobSet();
+
+        // BigIntegers are immutable, this works fine.
+        result.bits = bits;
+        result.numBitsSet = numBitsSet;
+
+        return result;
     }
 
     /**
