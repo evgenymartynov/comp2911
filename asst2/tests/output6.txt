@@ -1,0 +1,32 @@
+6011 nodes explored
+cost = 12683
+Move from 0 0 to 29 10
+Carry from 29 10 to 449 224
+Move from 449 224 to 445 367
+Carry from 445 367 to 381 887
+Move from 381 887 to 355 950
+Carry from 355 950 to 424 14
+Move from 424 14 to 176 222
+Carry from 176 222 to 308 849
+Move from 308 849 to 355 648
+Carry from 355 648 to 223 731
+Move from 223 731 to 203 382
+Carry from 203 382 to 185 950
+Move from 185 950 to 191 989
+Carry from 191 989 to 508 798
+Move from 508 798 to 657 783
+Carry from 657 783 to 753 735
+Move from 753 735 to 554 675
+Carry from 554 675 to 574 569
+Move from 574 569 to 406 579
+Carry from 406 579 to 725 165
+Move from 725 165 to 969 143
+Carry from 969 143 to 310 764
+Move from 310 764 to 363 607
+Carry from 363 607 to 388 891
+Move from 388 891 to 386 495
+Carry from 386 495 to 630 452
+Move from 630 452 to 962 488
+Carry from 962 488 to 208 831
+Move from 208 831 to 176 874
+Carry from 176 874 to 649 242

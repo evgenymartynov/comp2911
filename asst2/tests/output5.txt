@@ -1,0 +1,10 @@
+17 nodes explored
+cost = 589139
+Move from 0 0 to 34 463
+Carry from 34 463 to 35346 3434
+Move from 35346 3434 to 98324 234
+Carry from 98324 234 to 7897 9879
+Move from 7897 9879 to 56523 2334
+Carry from 56523 2334 to 10123 12313
+Move from 10123 12313 to 123213 123
+Carry from 123213 123 to 234 23423
