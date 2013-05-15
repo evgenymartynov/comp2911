@@ -40,7 +40,7 @@ import java.util.PriorityQueue;
  * since that takes O(n) time. We settle for using a visited set of states
  * instead, checked on popping the queue.
  */
-public class Solver {
+public class AStarTSPSolver {
     /**
      * Constructs a new A* solver for the given set of jobs and the heuristic.
      *
@@ -49,7 +49,7 @@ public class Solver {
      * @param heuristic
      *            Heuristic used for state ordering. Must be admissible.
      */
-    public Solver(List<Job> jobs, TSPHeuristic heuristic) {
+    public AStarTSPSolver(List<Job> jobs, TSPHeuristic heuristic) {
         this.jobs = jobs;
         this.heuristic = heuristic;
     }

@@ -42,7 +42,7 @@ public class CourierDelivery {
 
         // And go.
         List<Job> jobs = (new InputParser(inputStream)).parseJobs();
-        Solver solver = new Solver(jobs, heuristic);
+        AStarTSPSolver solver = new AStarTSPSolver(jobs, heuristic);
         solver.solve();
     }
 }
