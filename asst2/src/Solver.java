@@ -65,11 +65,10 @@ public class Solver {
         // Initialise PQ for with the starting point.
         pq.add(makeNode(0, new Point(0, 0), new CompletedJobSet(), null, null));
 
-        // The final state, if any, ends up in here.
+        // The final state ends up in here.
+        // We may assume that (given enough time), we will find an optimal
+        // solution.
         TSPState finalState = null;
-
-        // Bookkeeping for nodes expanded.
-        int exploredNodeCount = 0;
 
         while (!pq.isEmpty()) {
             TSPState state = pq.poll();
@@ -79,7 +78,6 @@ public class Solver {
                 continue;
             }
             visited.add(state);
-            exploredNodeCount++;
 
             // Have we just completed all the jobs?
             CompletedJobSet completedJobs = state.getCompletedSet();
@@ -100,6 +98,7 @@ public class Solver {
                         + job.getLength();
                 CompletedJobSet newCompletedSet = completedJobs.clone();
                 newCompletedSet.markCompleted(i);
+
                 TSPState next = makeNode(newDistance, job.getEnd(),
                         newCompletedSet, job, state);
                 pq.add(next);
@@ -112,7 +111,10 @@ public class Solver {
                     "Could not solve the problem for the given input.");
         }
 
-        printSolution(finalState, exploredNodeCount);
+        // Print out the formatted result.
+        // Number of expanded states is the number of nodes in the visited set.
+        // That includes the final state.
+        printSolution(finalState, visited.size());
     }
 
     /**
