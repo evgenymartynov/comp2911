@@ -41,8 +41,13 @@ Classes \texttt{Job} and/or \texttt{Point} are semi-utility classes, and hence
 everything seems to rely on them. If we were to draw a real UML diagram and not
 the one COMP2911 expects, we probably would not show these classes on this page.
 
-Further, note the Strategy pattern in use for the \texttt{TSPHeuristic}. It may
-not be apparent due to only having a single concrete class for the interface,
-but it does conform to the pattern.
+Further, note the Strategy pattern in use for the \texttt{TSPHeuristic}.
+I have included two different heuristics, but the code is wired to use the
+\texttt{MinimalSpanningTSPHeuristic} implementation.
+Note that any code duplication that you may observe between the two is
+intentional, and \texttt{ConcreteTSPHeuristic} is included in my submission
+purely as an example for the Strategy pattern.
+You are advised to ignore its code otherwise, even though it is a fully
+functional heuristic.
 
 \end{document}

@@ -171,7 +171,7 @@ public class AStarTSPSolver {
      *            Last completed job.
      * @param prevState
      *            The state from which we got to this state.
-     * @return
+     * @return Fully instantiated search state with expected parameters.
      */
     private TSPState makeNode(int distance, Point point,
             CompletedJobSet completedSet, Job prevJob, TSPState prevState) {
