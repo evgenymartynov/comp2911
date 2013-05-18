@@ -10,6 +10,10 @@ import java.util.List;
 
 /**
  * A TSP heuristic that is seemingly good. Based on an idea dealing with MSTs.
+ *
+ * Note that we have a limitation: the heuristic estimate may not exceed
+ * Integer.MAX_VALUE, as you may have probably expected with the use of int
+ * as the distance type.
  */
 public class MinimalSpanningTSPHeuristic implements TSPHeuristic {
     /**
